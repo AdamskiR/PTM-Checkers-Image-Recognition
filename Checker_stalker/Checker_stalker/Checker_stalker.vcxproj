@@ -154,7 +154,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Checker_stalker.cpp" />
+    <ClCompile Include="Checker.cpp" />
+    <ClCompile Include="MultipleStalking.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Checker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
