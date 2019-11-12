@@ -19,8 +19,8 @@ int S_MAX = 256;
 int V_MIN = 0;
 int V_MAX = 256;
 //default capture width and height
-const int FRAME_WIDTH = 640;
-const int FRAME_HEIGHT = 480;
+const int FRAME_WIDTH = 1280;
+const int FRAME_HEIGHT = 720;
 //max number of objects to be detected in frame
 const int MAX_NUM_OBJECTS = 50;
 //minimum and maximum object area
@@ -32,25 +32,21 @@ const string windowName1 = "HSV Image";
 const string windowName2 = "Thresholded Image";
 const string windowName3 = "After Morphological Operations";
 const string trackbarWindowName = "Trackbars";
+
 void on_trackbar(int, void*)
 {//This function gets called whenever a
 	// trackbar position is changed
-
-
-
-
-
 }
+
 string intToString(int number) {
 
 	std::stringstream ss;
 	ss << number;
 	return ss.str();
 }
+
 void createTrackbars() {
 	//create window for trackbars
-
-
 	namedWindow(trackbarWindowName, 0);
 	//create memory to store trackbar name on window
 	char TrackbarName[50];
@@ -71,11 +67,9 @@ void createTrackbars() {
 	createTrackbar("S_MAX", trackbarWindowName, &S_MAX, S_MAX, on_trackbar);
 	createTrackbar("V_MIN", trackbarWindowName, &V_MIN, V_MAX, on_trackbar);
 	createTrackbar("V_MAX", trackbarWindowName, &V_MAX, V_MAX, on_trackbar);
-
-
 }
-void drawObject(vector <Checker> checkers, Mat& frame) {
 
+void drawObject(vector <Checker> checkers, Mat& frame) {
 	for (int i = 0; i < checkers.size(); i++)
 	{
 		circle(frame, Point(checkers.at(i).GetX() , checkers.at(i).GetY()), 10, Scalar(0, 0, 255));
@@ -84,10 +78,8 @@ void drawObject(vector <Checker> checkers, Mat& frame) {
 	}
 }
 void morphOps(Mat & thresh) {
-
 	//create structuring element that will be used to "dilate" and "erode" image.
 	//the element chosen here is a 3px by 3px rectangle
-
 	Mat erodeElement = getStructuringElement(MORPH_RECT, Size(3, 3));
 	//dilate with larger element so make sure object is nicely visible
 	Mat dilateElement = getStructuringElement(MORPH_RECT, Size(8, 8));
@@ -95,14 +87,105 @@ void morphOps(Mat & thresh) {
 	erode(thresh, thresh, erodeElement);
 	erode(thresh, thresh, erodeElement);
 
-
 	dilate(thresh, thresh, dilateElement);
 	dilate(thresh, thresh, dilateElement);
 }
 
+void drawLine(Point start, Point end,Mat& frame) {
+	line(frame, start, end, Scalar(255, 255, 255), 8, 0);
+	putText(frame, intToString(start.x)+" , "+ intToString(start.y), start, 1, 1, Scalar(255, 255, 0));
+	putText(frame, intToString(end.x) + " , " + intToString(end.y), end, 1, 1, Scalar(255, 255, 0));
+}
+
+void drawLinesOnBoard(Point P1, Point P2, Mat& frame) {
+
+	int middlex1 = (P2.x - P1.x) / 2;
+	int middley1 = (P2.y - P1.y) / 2;
+
+	int middlex2 = (P2.x - P1.x) / 4;
+	int middley2 = (P2.y - P1.y) / 4;
+
+	int middlex3 = (P2.x - P1.x) / 8;
+	int middley3 = (P2.y - P1.y) / 8;
+
+	//tier1
+
+	Point P3 = Point(P1.x, P1.y + middley1);
+	Point P4 = Point(P2.x, P2.y - middley1);
+	Point P5 = Point(P1.x + middlex1, P1.y);
+	Point P6 = Point(P2.x - middlex1, P2.y);
+
+	 drawLine(P3, P4, frame);
+	 drawLine(P5, P6, frame);
+
+	 //tier2
+
+	 Point P7 = Point(P1.x, P1.y + middley1 + middley2);
+	 Point P8 = Point(P2.x, P2.y - middley2);
+	 Point P9 = Point(P1.x + middlex1 + middlex2, P1.y);
+	 Point P10 = Point(P2.x - middlex2, P2.y);
+
+	 drawLine(P7, P8, frame);
+	 drawLine(P9, P10, frame);
+
+	 Point P71 = Point(P1.x, P1.y + middley2);
+	 Point P81 = Point(P2.x, P2.y - middley1- middley2);
+	 Point P91 = Point(P1.x + middlex2, P1.y);
+	 Point P101 = Point(P2.x - middlex1- middlex2, P2.y);
+
+	 drawLine(P71, P81, frame);
+	 drawLine(P91, P101, frame);
+
+
+	 //tier 3
+
+	 Point P11 = Point(P1.x, P1.y + middley1 + middley2 + middley3);
+	 Point P12 = Point(P2.x, P2.y - middley3);
+	 Point P13 = Point(P1.x + middlex1 + middlex2 + middlex3, P1.y);
+	 Point P14 = Point(P2.x - middlex3, P2.y);
+
+	 drawLine(P11, P12, frame);
+	 drawLine(P13, P14, frame);
+
+	 Point P111 = Point(P1.x, P1.y +  middley1 + middley3);
+	 Point P121 = Point(P2.x, P2.y -middley2- middley3);
+	 Point P131 = Point(P1.x + middlex1 + middlex3, P1.y);
+	 Point P141 = Point(P2.x - middlex2-middlex3, P2.y);
+
+	 drawLine(P111, P121, frame);
+	 drawLine(P131, P141, frame);
+
+	 Point P112 = Point(P1.x, P1.y +  middley2 + middley3);
+	 Point P122 = Point(P2.x, P2.y - middley1 - middley3);
+	 Point P132 = Point(P1.x +  middlex2 + middlex3, P1.y);
+	 Point P142 = Point(P2.x - middlex1 -middlex3, P2.y);
+
+	 drawLine(P112, P122, frame);
+	 drawLine(P132, P142, frame);
+
+	 Point P113 = Point(P1.x, P1.y + middley3);
+	 Point P123 = Point(P2.x, P2.y - middley1 - middley2 - middley3);
+	 Point P133 = Point(P1.x +  middlex3, P1.y);
+	 Point P143 = Point(P2.x - middlex1 - middlex2-middlex3, P2.y);
+
+	 drawLine(P113, P123, frame);
+	 drawLine(P133, P143, frame);
+}
+
+void drawBorder(vector <Checker> checkers, Mat& frame) {
+	Point P1 = Point(checkers[0].GetX(), checkers[0].GetY());
+	Point P2 = Point(checkers[1].GetX(), checkers[1].GetY());
+	rectangle(frame, P1, P2, Scalar(0, 0, 255), 8, 0);
+	drawLinesOnBoard(P1, P2, frame);
+}
+
+
+
 void trackFilteredObject(Mat threshold, Mat HSV, Mat & cameraFeed,string name) {
 
 	vector <Checker> player1_checkers;
+	vector <Checker> player2_checkers;
+	vector <Checker> borders;
 
 	Mat temp;
 	threshold.copyTo(temp);
@@ -134,7 +217,20 @@ void trackFilteredObject(Mat threshold, Mat HSV, Mat & cameraFeed,string name) {
 					checker.SetX(moment.m10 / area);
 					checker.SetY(moment.m01 / area);
 
-					player1_checkers.push_back(checker);
+					if (checker.GetPlayerName() == "player1")
+					{
+						player1_checkers.push_back(checker);
+					}
+
+					if (checker.GetPlayerName() == "player2")
+					{
+						player2_checkers.push_back(checker);
+					}
+
+					if (checker.GetPlayerName() == "border")
+					{
+						borders.push_back(checker);
+					}
 
 					objectFound = true;
 
@@ -147,6 +243,9 @@ void trackFilteredObject(Mat threshold, Mat HSV, Mat & cameraFeed,string name) {
 			if (objectFound == true) {
 				//draw object location on screen
 				drawObject(player1_checkers, cameraFeed);
+				drawObject(player2_checkers, cameraFeed);
+				drawObject(borders, cameraFeed);
+				if (borders.size() == 2) drawBorder(borders,cameraFeed);
 			}
 
 		}
@@ -154,10 +253,13 @@ void trackFilteredObject(Mat threshold, Mat HSV, Mat & cameraFeed,string name) {
 	}
 }
 
+
+
+
 int main(int argc, char* argv[])
 {
 	//if we would like to calibrate our filter values, set to true.
-	bool calibrationMode = true;
+	bool calibrationMode = false;
 
 	//Matrix to store each frame of the webcam feed
 	Mat cameraFeed;
@@ -193,7 +295,7 @@ int main(int argc, char* argv[])
 		}
 		else {
 
-			Checker player1("Mr.White"), player2("Mr.Blue");
+			Checker player1("Mr.White"), player2("Mr.Blue"), border("border");
 
 			player1.SetHSVmin(Scalar(85,28,203));
 			player1.SetHSVmax(Scalar(125,111, 256));
@@ -201,8 +303,8 @@ int main(int argc, char* argv[])
 			player2.SetHSVmin(Scalar(99, 173, 100));
 			player2.SetHSVmax(Scalar(148, 256, 205));
 
-			//player3.SetHSVmin(Scalar(18, 65, 69));
-			//player3.SetHSVmax(Scalar(39, 189, 256));
+			border.SetHSVmin(Scalar(0, 0, 250));
+			border.SetHSVmax(Scalar(2, 4, 256));
 
 			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
 			inRange(HSV, player1.GetHSVmin(), player1.GetHSVmax(), threshold);
@@ -213,18 +315,15 @@ int main(int argc, char* argv[])
 			inRange(HSV, player2.GetHSVmin(), player2.GetHSVmax(), threshold);
 			morphOps(threshold);
 			trackFilteredObject(threshold, HSV, cameraFeed, "Mr.Blue");
+
+			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
+			inRange(HSV, border.GetHSVmin(), border.GetHSVmax(), threshold);
+			morphOps(threshold);
+			trackFilteredObject(threshold, HSV, cameraFeed, "border");
 		}
 
-		//show frames 
-		//imshow(windowName2,threshold);
-
 		imshow(windowName, cameraFeed);
-		//imshow(windowName1,HSV);
-
-
-		//delay 30ms so that screen can refresh.
-		//image will not appear without this waitKey() command
-		waitKey(30);
+		waitKey(30); // 30 ms delay
 	}
 
 
