@@ -307,16 +307,19 @@ int main(int argc, char* argv[])
 			border.SetHSVmax(Scalar(2, 4, 256));
 
 			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
+			medianBlur(HSV, HSV, 12);
 			inRange(HSV, player1.GetHSVmin(), player1.GetHSVmax(), threshold);
 			morphOps(threshold);
 			trackFilteredObject(threshold, HSV, cameraFeed,"Mr.White");
 
 			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
+			medianBlur(HSV, HSV, 12);
 			inRange(HSV, player2.GetHSVmin(), player2.GetHSVmax(), threshold);
 			morphOps(threshold);
 			trackFilteredObject(threshold, HSV, cameraFeed, "Mr.Blue");
 
 			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
+			medianBlur(HSV, HSV, 12);
 			inRange(HSV, border.GetHSVmin(), border.GetHSVmax(), threshold);
 			morphOps(threshold);
 			trackFilteredObject(threshold, HSV, cameraFeed, "border");
