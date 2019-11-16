@@ -25,10 +25,15 @@ public:
 
 	string GetPlayerName();
 
+public:
+	string tileName="aa";
+	int tileNumber;
+
 
 private :
 	int x, y;
 	string playerName;
+
 
 	cv::Scalar HSVmin, HSVmax;
 
