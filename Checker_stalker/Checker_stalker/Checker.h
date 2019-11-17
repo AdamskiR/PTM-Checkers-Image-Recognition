@@ -26,8 +26,8 @@ public:
 	string GetPlayerName();
 
 public:
-	string tileName="aa";
-	int tileNumber;
+	string tileName="00";
+	int tileNumber = 0;
 
 
 private :

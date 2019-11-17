@@ -32,6 +32,7 @@ const string windowName1 = "HSV Image";
 const string windowName2 = "Thresholded Image";
 const string windowName3 = "After Morphological Operations";
 const string trackbarWindowName = "Trackbars";
+bool p1Bigger = false;
 
 struct Tile {
 	Point start;
@@ -43,6 +44,8 @@ struct Tile {
 
 Point edgePoints[18];
 vector <Tile> tiles;
+vector <Checker> player1_checkers;
+vector <Checker> player2_checkers;
 
 void on_trackbar(int, void*)
 {//This function gets called whenever a
@@ -112,12 +115,14 @@ void CalcualteBoardEdges(Point P1, Point P2, Mat& frame) {
 
 	if (P2.x > P1.x)
 	{
+		p1Bigger = false;
 		boardLenght = P2.x - P1.x;
 		boardHeight = P2.y - P1.y;
 		 P0 = P1;
 	}
 	else
 	{
+		p1Bigger = true;
 		boardLenght = P1.x - P2.x;
 		boardHeight = P1.y - P2.y;
 		P0 = P2;
@@ -196,17 +201,30 @@ void CalculateTiles(Point boardEdge[18], Mat& frame) {
 
 void GiveCheckersTiles(Checker &checker, Mat& frame)
 {
+	if (p1Bigger)
 	for (int i = 0; i < 64; i++) {
 		if (checker.GetX() <= tiles[i].end.x 
 			&& checker.GetX() >= tiles[i].start.x
-			&& checker.GetY() <= tiles[i].start.y
-			&& checker.GetY() >= tiles[i].end.y)
+			&& checker.GetY() >= tiles[i].start.y
+			&& checker.GetY() <= tiles[i].end.y)
 					{
 						checker.tileName[0] = tiles[i].name[0];
 						checker.tileName[1] = tiles[i].name[1];
 						checker.tileNumber = tiles[i].number;
 					}
 	}
+	else
+		for (int i = 0; i < 64; i++) {
+			if (checker.GetX() <= tiles[i].end.x
+				&& checker.GetX() >= tiles[i].start.x
+				&& checker.GetY() <= tiles[i].start.y
+				&& checker.GetY() >= tiles[i].end.y)
+			{
+				checker.tileName[0] = tiles[i].name[0];
+				checker.tileName[1] = tiles[i].name[1];
+				checker.tileNumber = tiles[i].number;
+			}
+		}
 }
 
 void DrawTiles(Mat& frame)
@@ -227,8 +245,6 @@ void DrawTiles(Mat& frame)
 
 void trackFilteredObject(Mat threshold, Mat HSV, Mat & cameraFeed,string name) {
 
-	vector <Checker> player1_checkers;
-	vector <Checker> player2_checkers;
 	vector <Checker> borders;
 
 	Mat temp;
@@ -340,6 +356,30 @@ void CameraIdDetection() {
 	}
 }
 
+void DrawCheckers() {
+
+	char board[64];
+	for (int i = 0; i < 64; i++)
+	{
+		board[i] = 'O';
+	}
+	for (int i = 0; i < player1_checkers.size(); i++)
+		if (player1_checkers[i].tileNumber != 0) board[player1_checkers[i].tileNumber] = 'W';
+
+	for (int i = 0; i < player2_checkers.size(); i++)
+		if (player2_checkers[i].tileNumber != 0) board[player2_checkers[i].tileNumber] = 'B';
+
+	for (int i = 0; i < 8; i++)
+	{
+	for (int j = 0; j < 8; j++)
+	{
+		cout << board[j * i + j];
+	}
+	cout << endl;
+	}
+	cout << "----------------" << endl;
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -413,6 +453,10 @@ int main(int argc, char* argv[])
 			inRange(HSV, border.GetHSVmin(), border.GetHSVmax(), threshold);
 			morphOps(threshold);
 			trackFilteredObject(threshold, HSV, cameraFeed, "border");
+
+			DrawCheckers();
+			player1_checkers.clear();
+			player2_checkers.clear();
 		}
 
 		imshow(windowName, cameraFeed);
