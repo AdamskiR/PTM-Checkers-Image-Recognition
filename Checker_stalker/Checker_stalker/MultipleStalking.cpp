@@ -361,7 +361,7 @@ void DrawCheckers() {
 	char board[64];
 	for (int i = 0; i < 64; i++)
 	{
-		board[i] = 'O';
+		board[i] = '*';
 	}
 	for (int i = 0; i < player1_checkers.size(); i++)
 		if (player1_checkers[i].tileNumber != 0) board[player1_checkers[i].tileNumber] = 'W';
@@ -369,15 +369,18 @@ void DrawCheckers() {
 	for (int i = 0; i < player2_checkers.size(); i++)
 		if (player2_checkers[i].tileNumber != 0) board[player2_checkers[i].tileNumber] = 'B';
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 1; i <= 64; i++)
 	{
-	for (int j = 0; j < 8; j++)
-	{
-		cout << board[j * i + j];
+		if (i % 8 != 0) {
+			cout << board[i - 1];
+		}
+		else {
+			cout << board[i - 1] << endl;
+		}
+
 	}
-	cout << endl;
-	}
-	cout << "----------------" << endl;
+
+	cout << endl << "----------------" << endl;
 }
 
 
@@ -401,7 +404,7 @@ int main(int argc, char* argv[])
 	//video capture object to acquire webcam feed
 	VideoCapture capture;
 	//open capture object at location zero (default location for webcam)
-	capture.open(701);
+	capture.open(0);
 	//set height and width of capture frame
 	capture.set(CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
 	capture.set(CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
