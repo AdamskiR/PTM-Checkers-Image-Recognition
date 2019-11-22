@@ -6,6 +6,7 @@
 #include <vector>
 #include "C:/opencv/build/include/opencv2/imgproc.hpp"
 #include "Checker.h"
+#include <Windows.h>
 
 using namespace cv;
 using namespace std;
@@ -339,20 +340,34 @@ void CameraIdDetection() {
 	Mat cameraFeed;
 	Mat threshold;
 	Mat HSV;
-	for (int i = 0; i < 999; i++) {
+	string noDeviceFound = "No camera connected to the PC";
+	VideoCapture capture;
+
+	for (int i = 0; i <= 999; i++) {
 
 		try {
-			VideoCapture capture;
+
 			capture.open(i);
 			capture.set(CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
 			capture.set(CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
 			capture.read(cameraFeed);
 			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
-			cout << i << ": this number is ID of working camera" << endl;
+			if (capture.isOpened() == true) {
+				cout << i << ": this number is ID of working camera" << endl;
+				Sleep(60);
+			}
 		}
 		catch (...)
 		{
+			if (i == 999) {
+				if (!capture.isOpened() == true) {
+					cout << endl << "----------------" << endl;
+					cout << "Exception: " << noDeviceFound;
+					cout << endl << "----------------" << endl;
+				}
+			}
 		}
+		if (capture.isOpened() == true) { break; }
 	}
 }
 
