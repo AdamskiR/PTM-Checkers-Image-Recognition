@@ -8,8 +8,11 @@
 #include "Checker.h"
 #include <Windows.h>
 
+
 using namespace cv;
 using namespace std;
+
+
 
 //initial min and max HSV filter values.
 //these will be changed using trackbars
@@ -36,14 +39,15 @@ const string trackbarWindowName = "Trackbars";
 bool p1Bigger = false;
 
 struct Tile {
-	Point start;
-	Point end;
+	Point minX;
+	Point minY;
+	Point maxX;
+	Point maxY;
 	string name;
 	int number;
 	Point middle;
 };
 
-Point edgePoints[18];
 vector <Tile> tiles;
 vector <Checker> player1_checkers;
 vector <Checker> player2_checkers;
@@ -54,7 +58,6 @@ void on_trackbar(int, void*)
 }
 
 string intToString(int number) {
-
 	std::stringstream ss;
 	ss << number;
 	return ss.str();
@@ -87,8 +90,9 @@ void createTrackbars() {
 void drawObject(vector <Checker> checkers, Mat& frame) {
 	for (int i = 0; i < checkers.size(); i++)
 	{
-		circle(frame, Point(checkers.at(i).GetX() , checkers.at(i).GetY()), 10, Scalar(0, 0, 255));
-		putText(frame, intToString(checkers.at(i).GetX()) + " , " + intToString(checkers.at(i).GetY()), cv::Point(checkers.at(i).GetX(), checkers.at(i).GetY() + 20), 1, 1, Scalar(0, 255, 0));
+		//circle(frame, Point(checkers.at(i).GetX() , checkers.at(i).GetY() ), 50, Scalar(0, 0, 255));
+		rectangle(frame, Point(checkers.at(i).GetX() - 50, checkers.at(i).GetY() - 50) , Point(checkers.at(i).GetX() + 50, checkers.at(i).GetY() + 50) , Scalar(0, 0, 255), 1,1 ,0);
+		putText(frame, intToString(checkers.at(i).GetX()) + " , " + intToString(checkers.at(i).GetY()), cv::Point(checkers.at(i).GetX(), checkers.at(i).GetY() + 20), 1,1, Scalar(0, 255, 0));
 		putText(frame, checkers.at(i).GetPlayerName(), cv::Point(checkers.at(i).GetX(), checkers.at(i).GetY() + 40), 1, 1, Scalar(255, 255, 0));
 	}
 }
@@ -107,146 +111,12 @@ void morphOps(Mat & thresh) {
 }
 
 
-void CalcualteBoardEdges(Point P1, Point P2, Mat& frame) {
-	
-	int boardLenght = 0;
-	int boardHeight = 0;
 
-	Point P0;
-
-	if (P2.x > P1.x)
-	{
-		p1Bigger = false;
-		boardLenght = P2.x - P1.x;
-		boardHeight = P2.y - P1.y;
-		 P0 = P1;
-	}
-	else
-	{
-		p1Bigger = true;
-		boardLenght = P1.x - P2.x;
-		boardHeight = P1.y - P2.y;
-		P0 = P2;
-	}
-
-	Point P11 = Point (boardLenght / 8 + P0.x,P0.y);
-	Point P22 = Point(boardLenght / 8 * 2 + P0.x, P0.y);
-	Point P3 = Point(boardLenght / 8 * 3 + P0.x, P0.y);
-	Point P4 = Point(boardLenght / 8 * 4 + P0.x, P0.y);
-	Point P5 = Point(boardLenght / 8 * 5 + P0.x, P0.y);
-	Point P6 = Point(boardLenght / 8 * 6 + P0.x, P0.y);
-	Point P7 = Point(boardLenght / 8 * 7 + P0.x, P0.y);
-	Point P8 = Point(boardLenght + P0.x, P0.y);
-
-	Point P32 = P0;
-	Point P31 = Point(P0.x, boardHeight / 8 +P0.y);
-	Point P30 = Point(P0.x, boardHeight / 8 * 2 + P0.y);
-	Point P29 = Point(P0.x, boardHeight / 8 * 3 + P0.y);
-	Point P28 = Point(P0.x, boardHeight / 8 * 4 + P0.y);
-	Point P27 = Point(P0.x, boardHeight / 8 * 5 + P0.y);
-	Point P26 = Point(P0.x, boardHeight / 8 * 6 + P0.y);
-	Point P25 = Point(P0.x, boardHeight / 8 * 7 + P0.y);
-	Point P24 = Point(P0.x, boardHeight + P0.y);
-
-	edgePoints[0] = P0;
-	edgePoints[1] = P11;
-	edgePoints[2] = P22;
-	edgePoints[3] = P3;
-	edgePoints[4] = P4;
-	edgePoints[5] = P5;
-	edgePoints[6] = P6;
-	edgePoints[7] = P7;
-	edgePoints[8] = P8;
-	edgePoints[9] = P24;
-	edgePoints[10] = P25;
-	edgePoints[11] = P26;
-	edgePoints[12] = P27;
-	edgePoints[13] = P28;
-	edgePoints[14] = P29;
-	edgePoints[15] = P30;
-	edgePoints[16] = P31;
-	edgePoints[17] = P32;
-
-}
-
-void DrawEdges(Point boardEdge[18], Mat& frame) {
-	for (int i = 0; i < 18; i++)
-	{
-	circle(frame, Point(boardEdge[i].x, boardEdge[i].y), 10, Scalar(0, 0, 255));
-	putText(frame, intToString(i), boardEdge[i], 1, 1, Scalar(255, 255, 0));
-	}
-}
-
-void CalculateTiles(Point boardEdge[18], Mat& frame) {
-	string number = "ABCDEFGH";
-	string letter = "12345678";
-	int tileNum = 0;
-	tiles.clear();
-
-	for (int i=0;i<8;i++)
-		for (int j=0; j < 8; j++)
-		{
-			Tile tile;
-			tile.number = tileNum;
-			string tn = "  ";
-			tn[0] = number[i];
-			tn[1] = letter[j];
-			tile.name = tn;
-			tile.start = Point(boardEdge[j].x,boardEdge[17-i].y);
-			tile.end = Point(boardEdge[j+1].x, boardEdge[16-i].y);
-			tile.middle = Point((tile.end.x - tile.start.x) / 2 + tile.start.x, (tile.end.y - tile.start.y) / 2 + tile.start.y);
-			tiles.push_back(tile);
-			tileNum++;
-		}
-}
-
-void GiveCheckersTiles(Checker &checker, Mat& frame)
-{
-	if (p1Bigger)
-	for (int i = 0; i < 64; i++) {
-		if (checker.GetX() <= tiles[i].end.x 
-			&& checker.GetX() >= tiles[i].start.x
-			&& checker.GetY() >= tiles[i].start.y
-			&& checker.GetY() <= tiles[i].end.y)
-					{
-						checker.tileName[0] = tiles[i].name[0];
-						checker.tileName[1] = tiles[i].name[1];
-						checker.tileNumber = tiles[i].number;
-					}
-	}
-	else
-		for (int i = 0; i < 64; i++) {
-			if (checker.GetX() <= tiles[i].end.x
-				&& checker.GetX() >= tiles[i].start.x
-				&& checker.GetY() <= tiles[i].start.y
-				&& checker.GetY() >= tiles[i].end.y)
-			{
-				checker.tileName[0] = tiles[i].name[0];
-				checker.tileName[1] = tiles[i].name[1];
-				checker.tileNumber = tiles[i].number;
-			}
-		}
-}
-
-void DrawTiles(Mat& frame)
-{
-	for (int i = 0; i < 64; i++) {
-		if (i % 2 == 0)
-		{
-		rectangle(frame, tiles[i].start, tiles[i].end, Scalar(0, 0, 255), 8, 1);
-		putText(frame, tiles.at(i).name, tiles[i].middle, 1, 1, Scalar(0, 0,255));
-		}
-		else
-		{
-		rectangle(frame, tiles[i].start, tiles[i].end, Scalar(0, 255, 0), 8, 1);
-		putText(frame,tiles.at(i).name, tiles[i].middle, 1, 1, Scalar(0, 0,255));
-		}
-	}
-}
 
 void trackFilteredObject(Mat threshold, Mat HSV, Mat & cameraFeed,string name) {
 
-	vector <Checker> borders;
+	vector <Checker> bordersRed;
+	vector <Checker> bordersBlue;
 
 	Mat temp;
 	threshold.copyTo(temp);
@@ -288,9 +158,14 @@ void trackFilteredObject(Mat threshold, Mat HSV, Mat & cameraFeed,string name) {
 						player2_checkers.push_back(checker);
 					}
 
-					if (checker.GetPlayerName() == "border")
+					if (checker.GetPlayerName() == "TileRed")
 					{
-						borders.push_back(checker);
+						bordersRed.push_back(checker);
+					}
+
+					if (checker.GetPlayerName() == "TileBlue")
+					{
+						bordersBlue.push_back(checker);
 					}
 
 					objectFound = true;
@@ -302,32 +177,9 @@ void trackFilteredObject(Mat threshold, Mat HSV, Mat & cameraFeed,string name) {
 			}
 			//let user know you found an object
 			if (objectFound == true) {
-				drawObject(borders, cameraFeed);
-				if (borders.size() == 2)
-				{
-					CalcualteBoardEdges(Point (borders[0].GetX(), borders[0].GetY()), Point(borders[1].GetX(), borders[1].GetY()), cameraFeed);
-					DrawEdges(edgePoints, cameraFeed);
-					CalculateTiles(edgePoints, cameraFeed);
-					DrawTiles(cameraFeed);
-				}
-
-				if (tiles.size() == 64)
-				for (int i = 0; i < player1_checkers.size(); i++)
-				{
-					circle(cameraFeed, Point(player1_checkers.at(i).GetX(), player1_checkers.at(i).GetY()), 30, Scalar(0, 0, 0));
-					GiveCheckersTiles(player1_checkers[i], cameraFeed);
-					putText(cameraFeed, player1_checkers[i].tileName, cv::Point(player1_checkers.at(i).GetX(), player1_checkers.at(i).GetY() + 20), 1, 1, Scalar(0, 255, 0));
-				}
-
-				if (tiles.size() == 64)
-				for (int i = 0; i < player2_checkers.size(); i++)
-				{
-					circle(cameraFeed, Point(player2_checkers.at(i).GetX(), player2_checkers.at(i).GetY()), 30, Scalar(255, 255, 255));
-					GiveCheckersTiles(player2_checkers[i], cameraFeed);
-					putText(cameraFeed, player2_checkers[i].tileName, cv::Point(player2_checkers.at(i).GetX(), player2_checkers.at(i).GetY() + 20), 1, 1, Scalar(0, 0, 255));
-				}
-
-
+				drawObject(bordersRed, cameraFeed);
+				drawObject(bordersBlue, cameraFeed);
+				
 			}
 
 		}
@@ -367,7 +219,6 @@ void CameraIdDetection() {
 				}
 			}
 		}
-		if (capture.isOpened() == true) { break; }
 	}
 }
 
@@ -398,6 +249,9 @@ void DrawCheckers() {
 	cout << endl << "----------------" << endl;
 }
 
+void DrawBoard() {
+
+}
 
 int main(int argc, char* argv[])
 {
@@ -419,7 +273,7 @@ int main(int argc, char* argv[])
 	//video capture object to acquire webcam feed
 	VideoCapture capture;
 	//open capture object at location zero (default location for webcam)
-	capture.open(0);
+	capture.open(701);
 	//set height and width of capture frame
 	capture.set(CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
 	capture.set(CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
@@ -443,7 +297,7 @@ int main(int argc, char* argv[])
 		}
 		else {
 
-			Checker player1("Mr.White"), player2("Mr.Black"), border("border");
+			Checker player1("Mr.White"), player2("Mr.Black"), borderBlue("TileBlue"), borderRed("TileRed");
 
 			player1.SetHSVmin(Scalar(0,0,255));
 			player1.SetHSVmax(Scalar(0,0, 256));
@@ -451,10 +305,13 @@ int main(int argc, char* argv[])
 			player2.SetHSVmin(Scalar(0, 0, 0));
 			player2.SetHSVmax(Scalar(256, 256, 30));
 
-			border.SetHSVmin(Scalar(100, 255, 190));
-			border.SetHSVmax(Scalar(110, 256, 256));
+			borderBlue.SetHSVmin(Scalar(104, 154, 90));
+			borderBlue.SetHSVmax(Scalar(173, 256, 256));
 
-			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
+			borderRed.SetHSVmin(Scalar(0, 138, 171));
+			borderRed.SetHSVmax(Scalar(256, 237, 256));
+
+			/*cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
 			//medianBlur(HSV, HSV, 12);
 			inRange(HSV, player1.GetHSVmin(), player1.GetHSVmax(), threshold);
 			morphOps(threshold);
@@ -464,21 +321,29 @@ int main(int argc, char* argv[])
 			//medianBlur(HSV, HSV, 12);
 			inRange(HSV, player2.GetHSVmin(), player2.GetHSVmax(), threshold);
 			morphOps(threshold);
-			trackFilteredObject(threshold, HSV, cameraFeed, "Mr.Black");
+			trackFilteredObject(threshold, HSV, cameraFeed, "Mr.Black");*/
 
 			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
 			//medianBlur(HSV, HSV, 12);
-			inRange(HSV, border.GetHSVmin(), border.GetHSVmax(), threshold);
+			inRange(HSV, borderBlue.GetHSVmin(), borderBlue.GetHSVmax(), threshold);
 			morphOps(threshold);
-			trackFilteredObject(threshold, HSV, cameraFeed, "border");
+			trackFilteredObject(threshold, HSV, cameraFeed, "TileBlue");
 
-			DrawCheckers();
+			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
+			//medianBlur(HSV, HSV, 12);
+			inRange(HSV, borderRed.GetHSVmin(), borderRed.GetHSVmax(), threshold);
+			morphOps(threshold);
+			trackFilteredObject(threshold, HSV, cameraFeed, "TileRed");
+
+			DrawBoard();
+			//DrawCheckers();
 			player1_checkers.clear();
 			player2_checkers.clear();
 		}
 
 		imshow(windowName, cameraFeed);
 		waitKey(30); // 30 ms delay
+
 	}
 
 
