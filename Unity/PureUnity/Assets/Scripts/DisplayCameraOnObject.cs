@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DisplayCameraOnObject : MonoBehaviour
 {
@@ -15,7 +16,8 @@ public class DisplayCameraOnObject : MonoBehaviour
         webCamTexture.deviceName = devices[0].name;
         webCamTexture.Play();
 
-        GetComponent<Renderer>().material.mainTexture = webCamTexture;
+        // GetComponent<Renderer>().material.mainTexture = webCamTexture;
+        GetComponent<Image>().defaultMaterial.mainTexture = webCamTexture;
     }
 
     private void LateUpdate()
@@ -40,7 +42,10 @@ public class DisplayCameraOnObject : MonoBehaviour
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(0, 0, 80, 40), "Switch\n Camera"))
+        GUIStyle customButton = ("button");
+        customButton.fontSize = 36;
+
+        if (GUI.Button(new Rect(0, 0, 200, 120), "Switch \nCamera"))
         {
             webCamTexture.Stop();
             webCamTexture.deviceName = (webCamTexture.deviceName == devices[0].name) ? devices[1].name : devices[0].name;

@@ -9,6 +9,7 @@ public class TimeMaster : MonoBehaviour
     DisplayCameraOnObject photoTaker;
     ReadCameraInput board;
     ReadWhiteColor whiteCheckers;
+    ReadYellowColor markerTracker;
     VisualizerTest visual;
     bool isReady = true;
     
@@ -18,6 +19,7 @@ public class TimeMaster : MonoBehaviour
         board = FindObjectOfType<ReadCameraInput>();
         whiteCheckers = FindObjectOfType<ReadWhiteColor>();
         visual = FindObjectOfType<VisualizerTest>();
+        markerTracker = FindObjectOfType<ReadYellowColor>();
     }
 
     // Update is called once per frame
@@ -31,8 +33,10 @@ public class TimeMaster : MonoBehaviour
     {
         isReady = false;
         photoTaker.TakePhoto();
+        
         board.ReadColors();
         whiteCheckers.ReadColors();
+        markerTracker.ReadColors();
         visual.ShowGame();
         yield return new WaitForSeconds(captureRate);
         isReady = true;

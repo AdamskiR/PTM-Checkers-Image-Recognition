@@ -19,7 +19,7 @@ public class VisualizerTest : MonoBehaviour
         int tilesNumber = FindObjectOfType<ReadCameraInput>().middlePoints.Count;
         if (tilesNumber > 32) tilesNumber = 32;
 
-        int checkerNumber = FindObjectOfType<ReadCameraInput>().middlePoints.Count;
+        int checkerNumber = FindObjectOfType<ReadWhiteColor>().middlePoints.Count;
         if (checkerNumber > 16) checkerNumber = 16;
 
         try {
@@ -35,19 +35,21 @@ public class VisualizerTest : MonoBehaviour
 
             for (int i = 0; i < tilesNumber; i++)
                 {
-                    tiles[i].transform.position = new Vector3(FindObjectOfType<ReadCameraInput>().middlePoints[i].x, FindObjectOfType<ReadCameraInput>().middlePoints[i].y, 1);
+                    tiles[i].transform.position = new Vector3(transform.position.x - FindObjectOfType<ReadCameraInput>().middlePoints[i].x/1.2f+200, transform.position.y - FindObjectOfType<ReadCameraInput>().middlePoints[i].y/ 1.2f + 200, 1);
                 }
 
                 for (int i = 0; i < checkerNumber; i++)
                 {
-                    whiteCheckers[i].transform.position = new Vector3(FindObjectOfType<ReadWhiteColor>().middlePoints[i].x, FindObjectOfType<ReadWhiteColor>().middlePoints[i].y, 1);
+                    whiteCheckers[i].transform.position = new Vector3(transform.position.x - FindObjectOfType<ReadWhiteColor>().middlePoints[i].x/ 1.2f + 200, transform.position.y - FindObjectOfType<ReadWhiteColor>().middlePoints[i].y/ 1.2f + 200, 1);
                 }
-
-            }
+           
+        }
             catch (Exception e)
             {
                 Debug.Log("Za malo pol/pionkow");
             }
+        FindObjectOfType<TileTracker>().CalculateTiles();
+
     }
     
 }
