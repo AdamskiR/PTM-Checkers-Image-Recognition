@@ -12,27 +12,20 @@ public class ReadCameraInput : MonoBehaviour
     [SerializeField] float Gvalue = 0.5f;
     [SerializeField] float Bvalue = 0.5f;
 
+    [Header("Picture details")]
     [SerializeField][Range(0,100)] int TileDetectionRange = 10;
     public List<Vector2> middlePoints;
-    int mapaX = 1380, mapaY = 820;
-    public int[,] mapa;
-    int nextgroup = 2;
     public AllGroups ListOfAllGroups = new AllGroups();
+
+    public int[,] mapa;
+    int mapaX = 1380, mapaY = 820;
+    int nextgroup = 2;
+   
 
     void Start()
     {
         mapa = new int[mapaX, mapaY];
     }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F8))
-        {
-            ReadColors();
-        }
-    }
-
-
 
     [System.Serializable]
     public class SingleGroup
@@ -220,13 +213,6 @@ public class ReadCameraInput : MonoBehaviour
                     }
                 }
             } //KILL ME PLS //
-
-
-
-
-
-
-
 
 
             newTex.Apply();
