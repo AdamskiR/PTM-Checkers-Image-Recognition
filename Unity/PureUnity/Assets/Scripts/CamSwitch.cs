@@ -14,11 +14,11 @@ public class CamSwitch : MonoBehaviour
         currentCameraIndex = 0;
         for (int i = 1; i < cameras.Length; i++)
         {
-            cameras[i].enabled = false;
+            cameras[i].gameObject.SetActive(false);
         }
         if (cameras.Length > 0)
         {
-            cameras[0].enabled = true;
+            cameras[0].gameObject.SetActive(true);
             Debug.Log("Camera with name: " + cameras[0].GetComponent<Camera>().name + ", is now enabled");
         }
     }
@@ -31,15 +31,15 @@ public class CamSwitch : MonoBehaviour
             Debug.Log("C button has been pressed. Switching to the next camera");
             if (currentCameraIndex < cameras.Length)
             {
-                cameras[currentCameraIndex - 1].enabled=false;
-                cameras[currentCameraIndex].enabled=true;
+                cameras[currentCameraIndex - 1].gameObject.SetActive(false);
+                cameras[currentCameraIndex].gameObject.SetActive(true);
                 Debug.Log("Camera with name: " + cameras[currentCameraIndex].GetComponent<Camera>().name + ", is now enabled");
             }
             else
             {
-                cameras[currentCameraIndex - 1].enabled=false;
+                cameras[currentCameraIndex - 1].gameObject.SetActive(false);
                 currentCameraIndex = 0;
-                cameras[currentCameraIndex].enabled = true ;
+                cameras[currentCameraIndex].gameObject.SetActive(true);
                 Debug.Log("Camera with name: " + cameras[currentCameraIndex].GetComponent<Camera>().name + ", is now enabled");
             }
         }
