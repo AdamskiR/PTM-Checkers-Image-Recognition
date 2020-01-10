@@ -9,21 +9,25 @@ public class TileTracker : MonoBehaviour
     [Header("Data")]
     [SerializeField] Vector3 marker;
     [SerializeField] Vector3[] whiteCheckers;
+    [SerializeField] Vector3[] blackCheckers;
     [SerializeField] TilesDetails[] tiles;
 
     [Header("3D Objects")]
     [SerializeField] GameObject[] TileRepresentation3D = new GameObject[8];
     [SerializeField] GameObject[] whiteRepresentation3D = new GameObject[6];
+    [SerializeField] GameObject[] blackRepresentation3D = new GameObject[6];
 
     [SerializeField] int TileNumber;
     private int tilesNumber;
-    private int checkerNumber;
+    private int whiteCheckerNumber;
+    private int blackCheckerNumber;
 
     public void CalculateTiles()
     {
         SetNumberOfObjects();
 
-        whiteCheckers = new Vector3[checkerNumber];
+        whiteCheckers = new Vector3[whiteCheckerNumber];
+        blackCheckers = new Vector3[blackCheckerNumber];
         tiles = new TilesDetails[tilesNumber];
 
         if (tiles.Length == TileNumber)
@@ -73,6 +77,35 @@ public class TileTracker : MonoBehaviour
                 Debug.Log("kaczka poza polem");
             }
         }
+
+        for (int i = 0; i < blackCheckers.Length; i++)
+        {
+            int index = -1;
+            float minDistance = 500;
+            for (int j = 0; j < tiles.Length; j++)
+            {
+                float distChecker = Vector3.Distance(blackCheckers[i], marker);
+                float distTile = Vector3.Distance(tiles[j].tilePosition, marker);
+                if (Math.Abs(distChecker - distTile) < minDistance)
+                {
+                    minDistance = Math.Abs(distChecker - distTile);
+                    index = j;
+                }
+
+            }
+            if (index > -1)
+            {
+                blackRepresentation3D[i].transform.position = new Vector3(TileRepresentation3D[index].transform.position.x,
+                TileRepresentation3D[index].transform.position.y + 30, TileRepresentation3D[index].transform.position.z);
+                Debug.Log("kurczak na polu: " + index);
+            }
+
+            else
+            {
+                Debug.Log("kaczka poza polem");
+            }
+        }
+
     }
 
     private void Link3DObjectsWithCameraInput()
@@ -113,17 +146,21 @@ public class TileTracker : MonoBehaviour
     {
         try
         {
-        if (FindObjectOfType<ReadYellowColor>().middlePoints.Count > 0)
-        marker = new Vector3(FindObjectOfType<ReadYellowColor>().middlePoints[0].x, FindObjectOfType<ReadYellowColor>().middlePoints[0].y, 1);
+        if (FindObjectOfType<ReadColorGreen>().middlePoints.Count > 0)
+        marker = new Vector3(FindObjectOfType<ReadColorGreen>().middlePoints[0].x, FindObjectOfType<ReadColorGreen>().middlePoints[0].y, 1);
 
         for (int i = 0; i<tilesNumber; i++)
             {
-            tiles[i] = new TilesDetails(new Vector3(FindObjectOfType<ReadCameraInput>().middlePoints[i].x, FindObjectOfType<ReadCameraInput>().middlePoints[i].y, 1), marker);
+            tiles[i] = new TilesDetails(new Vector3(FindObjectOfType<ReadColorRed>().middlePoints[i].x, FindObjectOfType<ReadColorRed>().middlePoints[i].y, 1), marker);
             }
 
-        for (int i = 0; i<checkerNumber; i++)
+        for (int i = 0; i<whiteCheckerNumber; i++)
             {
-                whiteCheckers[i] = new Vector3(FindObjectOfType<ReadWhiteColor>().middlePoints[i].x, FindObjectOfType<ReadWhiteColor>().middlePoints[i].y, 1);
+                whiteCheckers[i] = new Vector3(FindObjectOfType<ReadColorWhite>().middlePoints[i].x, FindObjectOfType<ReadColorWhite>().middlePoints[i].y, 1);
+            }
+        for (int i = 0; i < blackCheckerNumber; i++)
+            {
+                blackCheckers[i] = new Vector3(FindObjectOfType<ReadColorBlack>().middlePoints[i].x, FindObjectOfType<ReadColorBlack>().middlePoints[i].y, 1);
             }
         }
         catch (Exception e)
@@ -136,17 +173,20 @@ public class TileTracker : MonoBehaviour
     {
         for (int i = 0; i < whiteRepresentation3D.Length; i++)
         {
-            whiteRepresentation3D[i].transform.position = new Vector3(0, -30, 0);
+            whiteRepresentation3D[i].transform.position = new Vector3(0, -60, 0);
         }
     }
 
     private void SetNumberOfObjects()
     {
-        tilesNumber = FindObjectOfType<ReadCameraInput>().middlePoints.Count;
+        tilesNumber = FindObjectOfType<ReadColorRed>().middlePoints.Count;
         if (tilesNumber > 8) tilesNumber = 8;
 
-        checkerNumber = FindObjectOfType<ReadWhiteColor>().middlePoints.Count;
-        if (checkerNumber > 16) checkerNumber = 16;
+        whiteCheckerNumber = FindObjectOfType<ReadColorWhite>().middlePoints.Count;
+        if (whiteCheckerNumber > 16) whiteCheckerNumber = 16;
+
+        blackCheckerNumber = FindObjectOfType<ReadColorBlack>().middlePoints.Count;
+        if (blackCheckerNumber > 16) blackCheckerNumber = 16;
     }
 
 }
