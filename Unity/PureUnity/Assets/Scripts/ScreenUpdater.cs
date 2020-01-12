@@ -8,10 +8,10 @@ public class ScreenUpdater : MonoBehaviour
 
     CameraInput photoTaker;
 
-    ReadColorRed red;
-    ReadColorWhite white;
-    ReadColorBlack black;
-    ReadColorGreen green; 
+    ReadColorRedinHSV red;
+    ReadColorWhiteinHSV white;
+    ReadColorBlackinHSV black;
+    ReadColorGreeninHSV green; 
 
     Simple2DVisualizer visual;
 
@@ -22,10 +22,10 @@ public class ScreenUpdater : MonoBehaviour
         photoTaker = FindObjectOfType<CameraInput>();
         visual = FindObjectOfType<Simple2DVisualizer>();
 
-        red = FindObjectOfType<ReadColorRed>();
-        white = FindObjectOfType<ReadColorWhite>();
-        black = FindObjectOfType<ReadColorBlack>();
-        green = FindObjectOfType<ReadColorGreen>();
+        red = FindObjectOfType<ReadColorRedinHSV>();
+        white = FindObjectOfType<ReadColorWhiteinHSV>();
+        black = FindObjectOfType<ReadColorBlackinHSV>();
+        green = FindObjectOfType<ReadColorGreeninHSV>();
     }
 
     void Update()

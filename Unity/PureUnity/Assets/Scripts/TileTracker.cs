@@ -17,7 +17,8 @@ public class TileTracker : MonoBehaviour
     [SerializeField] GameObject[] whiteRepresentation3D = new GameObject[6];
     [SerializeField] GameObject[] blackRepresentation3D = new GameObject[6];
 
-    [SerializeField] int TileNumber;
+    [SerializeField] int TileNumber = 32;
+    [SerializeField] int markerTileA1Distance = 60;
     private int tilesNumber;
     private int whiteCheckerNumber;
     private int blackCheckerNumber;
@@ -36,7 +37,9 @@ public class TileTracker : MonoBehaviour
             try
             {
                 GetObjectsData();
-                SortTilesByDistanceToMarker();
+                //SortTilesByDistanceToMarker();
+
+                SortTilesByCoordinates();
                 Link3DObjectsWithCameraInput();
                 PutCheckersOnTiles();
             }
@@ -56,11 +59,10 @@ public class TileTracker : MonoBehaviour
             float minDistance = 500;
             for (int j = 0; j < tiles.Length; j++)
             {
-                float distChecker = Vector3.Distance(whiteCheckers[i], marker);
-                float distTile = Vector3.Distance(tiles[j].tilePosition, marker);
-                if (Math.Abs(distChecker - distTile) < minDistance)
+                float distanceTileChecker = Vector3.Distance(whiteCheckers[i], tiles[j].tilePosition);
+                if (Math.Abs(distanceTileChecker) < minDistance)
                 {
-                    minDistance = Math.Abs(distChecker - distTile);
+                    minDistance = Math.Abs(distanceTileChecker);
                     index = j;
                 }
 
@@ -142,25 +144,129 @@ public class TileTracker : MonoBehaviour
         }
     }
 
+    private void PrintTilesArray()
+    {
+        foreach(var t  in tiles )
+        {
+            Debug.Log(t.tilePosition.x + " "+t.tilePosition.y);
+        }
+        Debug.Log("end");
+    }
+
+    
+
+    private void SortTilesByCoordinates()
+    {
+        tiles = tiles.OrderBy(x => x.distanceToMarker).ToArray();
+        float cornerRU = tiles[0].tilePosition.y - marker.y;
+        float cornerLD = marker.y - tiles[0].tilePosition.y;
+        float cornerLU = marker.x - tiles[0].tilePosition.x;
+        float cornerRD = tiles[0].tilePosition.x - marker.x;
+        Debug.Log("RU: " + cornerRU +", RD"+cornerRD + " ,LD" + cornerLD+ " ,LU" + cornerLU);
+
+        if (cornerRU > markerTileA1Distance)
+        {
+
+            tiles = tiles.OrderBy(x => x.tilePosition.y).ToArray();
+            double numberOfTilesInRowD = Math.Sqrt(tilesNumber * 2) / 2;
+            int numberOfTilesInRow = (int)Math.Round(numberOfTilesInRowD);
+            for (int i = 0; i < numberOfTilesInRow * 2; i++)
+            {
+                TilesDetails[] tilesInRow = new TilesDetails[numberOfTilesInRow];
+                for (int j = 0; j < numberOfTilesInRow; j++)
+                {
+                    tilesInRow[j] = tiles[i * numberOfTilesInRow + j];
+                }
+                tilesInRow = tilesInRow.OrderBy(x => x.tilePosition.x).ToArray();
+                for (int j = 0; j < numberOfTilesInRow; j++)
+                {
+                    tiles[i * numberOfTilesInRow + j] = tilesInRow[j];
+                }
+            }
+
+        }
+
+        if (cornerRD > markerTileA1Distance)
+        {
+            tiles = tiles.OrderBy(x => x.tilePosition.x).ToArray();
+            double numberOfTilesInRowD = Math.Sqrt(tilesNumber * 2) / 2;
+            int numberOfTilesInRow = (int)Math.Round(numberOfTilesInRowD);
+            for (int i = 0; i < numberOfTilesInRow * 2; i++)
+            {
+                TilesDetails[] tilesInRow = new TilesDetails[numberOfTilesInRow];
+                for (int j = 0; j < numberOfTilesInRow; j++)
+                {
+                    tilesInRow[j] = tiles[i * numberOfTilesInRow + j];
+                }
+                tilesInRow = tilesInRow.OrderByDescending(x => x.tilePosition.y).ToArray();
+                for (int j = 0; j < numberOfTilesInRow; j++)
+                {
+                    tiles[i * numberOfTilesInRow + j] = tilesInRow[j];
+                }
+            }
+        }
+
+        if (cornerLU > markerTileA1Distance)
+        {
+            tiles = tiles.OrderByDescending(x => x.tilePosition.x).ToArray();
+            double numberOfTilesInRowD = Math.Sqrt(tilesNumber * 2) / 2;
+            int numberOfTilesInRow = (int)Math.Round(numberOfTilesInRowD);
+            for (int i = 0; i < numberOfTilesInRow * 2; i++)
+            {
+                TilesDetails[] tilesInRow = new TilesDetails[numberOfTilesInRow];
+                for (int j = 0; j < numberOfTilesInRow; j++)
+                {
+                    tilesInRow[j] = tiles[i * numberOfTilesInRow + j];
+                }
+                tilesInRow = tilesInRow.OrderBy(x => x.tilePosition.y).ToArray();
+                for (int j = 0; j < numberOfTilesInRow; j++)
+                {
+                    tiles[i * numberOfTilesInRow + j] = tilesInRow[j];
+                }
+            }
+        }
+
+        if (cornerLD > markerTileA1Distance)
+        {
+            tiles = tiles.OrderByDescending(x => x.tilePosition.y).ToArray();
+            double numberOfTilesInRowD = Math.Sqrt(tilesNumber * 2) / 2;
+            int numberOfTilesInRow = (int)Math.Round(numberOfTilesInRowD);
+            for (int i = 0; i < numberOfTilesInRow * 2; i++)
+            {
+                TilesDetails[] tilesInRow = new TilesDetails[numberOfTilesInRow];
+                for (int j = 0; j < numberOfTilesInRow; j++)
+                {
+                    tilesInRow[j] = tiles[i * numberOfTilesInRow + j];
+                }
+                tilesInRow = tilesInRow.OrderByDescending(x => x.tilePosition.x).ToArray();
+                for (int j = 0; j < numberOfTilesInRow; j++)
+                {
+                    tiles[i * numberOfTilesInRow + j] = tilesInRow[j];
+                }
+            }
+        }
+
+    }
+
     private void GetObjectsData()
     {
         try
         {
-        if (FindObjectOfType<ReadColorGreen>().middlePoints.Count > 0)
-        marker = new Vector3(FindObjectOfType<ReadColorGreen>().middlePoints[0].x, FindObjectOfType<ReadColorGreen>().middlePoints[0].y, 1);
+        if (FindObjectOfType<ReadColorGreeninHSV>().middlePoints.Count > 0)
+        marker = new Vector3(FindObjectOfType<ReadColorGreeninHSV>().middlePoints[0].x, FindObjectOfType<ReadColorGreeninHSV>().middlePoints[0].y, 1);
 
         for (int i = 0; i<tilesNumber; i++)
             {
-            tiles[i] = new TilesDetails(new Vector3(FindObjectOfType<ReadColorRed>().middlePoints[i].x, FindObjectOfType<ReadColorRed>().middlePoints[i].y, 1), marker);
+            tiles[i] = new TilesDetails(new Vector3(FindObjectOfType<ReadColorRedinHSV>().middlePoints[i].x, FindObjectOfType<ReadColorRedinHSV>().middlePoints[i].y, 1), marker);
             }
 
         for (int i = 0; i<whiteCheckerNumber; i++)
             {
-                whiteCheckers[i] = new Vector3(FindObjectOfType<ReadColorWhite>().middlePoints[i].x, FindObjectOfType<ReadColorWhite>().middlePoints[i].y, 1);
+                whiteCheckers[i] = new Vector3(FindObjectOfType<ReadColorWhiteinHSV>().middlePoints[i].x, FindObjectOfType<ReadColorWhiteinHSV>().middlePoints[i].y, 1);
             }
         for (int i = 0; i < blackCheckerNumber; i++)
             {
-                blackCheckers[i] = new Vector3(FindObjectOfType<ReadColorBlack>().middlePoints[i].x, FindObjectOfType<ReadColorBlack>().middlePoints[i].y, 1);
+                blackCheckers[i] = new Vector3(FindObjectOfType<ReadColorBlackinHSV>().middlePoints[i].x, FindObjectOfType<ReadColorBlackinHSV>().middlePoints[i].y, 1);
             }
         }
         catch (Exception e)
@@ -175,17 +281,23 @@ public class TileTracker : MonoBehaviour
         {
             whiteRepresentation3D[i].transform.position = new Vector3(0, -60, 0);
         }
+
+        for (int i = 0; i < blackRepresentation3D.Length; i++)
+        {
+            blackRepresentation3D[i].transform.position = new Vector3(0, -60, 0);
+        }
+
     }
 
     private void SetNumberOfObjects()
     {
-        tilesNumber = FindObjectOfType<ReadColorRed>().middlePoints.Count;
+        tilesNumber = FindObjectOfType<ReadColorRedinHSV>().middlePoints.Count;
         if (tilesNumber > 8) tilesNumber = 8;
 
-        whiteCheckerNumber = FindObjectOfType<ReadColorWhite>().middlePoints.Count;
+        whiteCheckerNumber = FindObjectOfType<ReadColorWhiteinHSV>().middlePoints.Count;
         if (whiteCheckerNumber > 16) whiteCheckerNumber = 16;
 
-        blackCheckerNumber = FindObjectOfType<ReadColorBlack>().middlePoints.Count;
+        blackCheckerNumber = FindObjectOfType<ReadColorBlackinHSV>().middlePoints.Count;
         if (blackCheckerNumber > 16) blackCheckerNumber = 16;
     }
 

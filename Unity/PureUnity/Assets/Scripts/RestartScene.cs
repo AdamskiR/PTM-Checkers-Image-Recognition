@@ -3,21 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class RestartGame : MonoBehaviour
+public class RestartScene : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] Camera [] cameras;
 
     // Update is called once per frame
     void Update()
     {
-        // Restart scene when press 'R'.
-        if (Input.GetKeyUp(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            int i = 0;
+            foreach (Camera cam in cameras)
+            {
+                if (i==0)
+                {
+                    cam.gameObject.SetActive(true);
+                    i++;
+                }
+                else
+                {
+                    cam.gameObject.SetActive(false);
+                    i++;
+                }
+        }
         }
     }
 }

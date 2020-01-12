@@ -7,6 +7,11 @@ public class TilesDetails
     public GameObject TileRepresentation3D;
     public Vector3 tilePosition;
     public float distanceToMarker;
+    public bool occupiedWhite = false;
+    public bool occupiedBlack = false;
+    public TilesDetails []neighborTiles;
+    public TilesDetails []captureTiles;
+
 
     public TilesDetails()
     {
