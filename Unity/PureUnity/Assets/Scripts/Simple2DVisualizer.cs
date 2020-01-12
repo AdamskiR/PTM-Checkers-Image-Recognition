@@ -13,7 +13,7 @@ public class Simple2DVisualizer : MonoBehaviour
     public void ShowGame()
     {
         int tilesNumber = FindObjectOfType<ReadColorRedinHSV>().middlePoints.Count;
-        if (tilesNumber > 32) tilesNumber = 32;
+        if (tilesNumber > 42) tilesNumber = 42;
 
         int whiteCheckerNumber = FindObjectOfType<ReadColorWhiteinHSV>().middlePoints.Count;
         if (whiteCheckerNumber > 16) whiteCheckerNumber = 16;
@@ -38,7 +38,7 @@ public class Simple2DVisualizer : MonoBehaviour
 
     private void CleanScrean()
     {
-        for (int i = 0; i < 32; i++)
+        for (int i = 0; i < 42; i++)
         {
             tiles[i].transform.position = new Vector3(2500, 200, 1);
         }
