@@ -8,8 +8,8 @@ public class TileTracker : MonoBehaviour
 {
     [Header("Data")]
     [SerializeField] Vector3 marker;
-    [SerializeField] Vector3[] whiteCheckers;
-    [SerializeField] Vector3[] blackCheckers;
+    public Vector3[] whiteCheckers;
+    public Vector3[] blackCheckers;
     [SerializeField] TilesDetails[] tiles;
 
     [Header("3D Objects")]
@@ -17,7 +17,7 @@ public class TileTracker : MonoBehaviour
     [SerializeField] GameObject[] whiteRepresentation3D = new GameObject[20];
     [SerializeField] GameObject[] blackRepresentation3D = new GameObject[20];
 
-    [SerializeField] int tileNumber = 32;
+    [SerializeField] int desirableTilesNumber = 32;
     [SerializeField] int markerTileA1Distance = 60;
     [SerializeField] int errorMargin = 50;
     private int tilesNumber;
@@ -28,17 +28,18 @@ public class TileTracker : MonoBehaviour
     {
         SetNumberOfObjects();
 
-        whiteCheckers = new Vector3[whiteCheckerNumber];
-        blackCheckers = new Vector3[blackCheckerNumber];
+       
         tiles = new TilesDetails[tilesNumber];
 
-        if (tiles.Length == tileNumber)
+        if (RightTilesNumber())
         {
+            whiteCheckers = new Vector3[whiteCheckerNumber];
+            blackCheckers = new Vector3[blackCheckerNumber];
             HideAll3DChecker();
-            
-            //try
+
+            try
             {
-                
+
                 GetObjectsData();
                 ClearTilesOccupation();
                 //SortTilesByDistanceToMarker();
@@ -48,13 +49,26 @@ public class TileTracker : MonoBehaviour
                 PutCheckersOnTiles();
                 FillCaptureTiles();
                 //FillNeighbours();
+                FindObjectOfType<TimeMaster>().CheckMovement();
             }
-           // catch (Exception e)
+             catch (Exception e)
             {
                 Debug.Log("Nie ukonczono wizualizacji 3D");
             }
         }
 
+    }
+
+    public bool RightTilesNumber()
+    {
+        if (desirableTilesNumber == tilesNumber)
+            return true;
+        else return false;
+    }
+
+    public TilesDetails[] AllTiles ()
+    {
+        return tiles;
     }
 
     private void ClearTilesOccupation()
@@ -135,39 +149,7 @@ public class TileTracker : MonoBehaviour
         }
     }
 
-    private void SortTilesByDistanceToMarker()
-    {
-        tiles = tiles.OrderBy(x => x.distanceToMarker).ToArray();
 
-        float distTile1 = Vector3.Distance(tiles[0].tilePosition, tiles[1].tilePosition);
-        float distTile2 = Vector3.Distance(tiles[0].tilePosition, tiles[2].tilePosition);
-
-        float distTile4 = Vector3.Distance(tiles[7].tilePosition, tiles[4].tilePosition);
-        float distTile5 = Vector3.Distance(tiles[7].tilePosition, tiles[5].tilePosition);
-
-        if (distTile1 > distTile2)
-        {
-            TilesDetails pom = tiles[2];
-            tiles[2] = tiles[1];
-            tiles[1] = pom;
-        }
-
-        if (distTile4 > distTile5)
-        {
-            TilesDetails pom = tiles[5];
-            tiles[5] = tiles[4];
-            tiles[4] = pom;
-        }
-    }
-
-    private void PrintTilesArray()
-    {
-        foreach(var t  in tiles )
-        {
-            Debug.Log(t.tilePosition.x + " "+t.tilePosition.y);
-        }
-        Debug.Log("end");
-    }
 
     
 
