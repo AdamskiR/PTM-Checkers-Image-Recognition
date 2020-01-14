@@ -8,10 +8,10 @@ public class ScreenUpdater : MonoBehaviour
 
     CameraInput photoTaker;
 
-    ReadColorRedinHSV red;
+   // ReadColorRedinHSV red;
     ReadColorWhiteinHSV white;
     ReadColorBlackinHSV black;
-    ReadColorGreeninHSV green; 
+   // ReadColorGreeninHSV green; 
 
     Simple2DVisualizer visual;
 
@@ -22,15 +22,16 @@ public class ScreenUpdater : MonoBehaviour
         photoTaker = FindObjectOfType<CameraInput>();
         visual = FindObjectOfType<Simple2DVisualizer>();
 
-        red = FindObjectOfType<ReadColorRedinHSV>();
+        //red = FindObjectOfType<ReadColorRedinHSV>();
         white = FindObjectOfType<ReadColorWhiteinHSV>();
         black = FindObjectOfType<ReadColorBlackinHSV>();
-        green = FindObjectOfType<ReadColorGreeninHSV>();
+       // green = FindObjectOfType<ReadColorGreeninHSV>();
     }
 
     void Update()
     {
         if (isReady)
+        //if (Input.GetKeyDown(KeyCode.A))
         StartCoroutine(ProcessCameraImage());
     }
 
@@ -40,10 +41,10 @@ public class ScreenUpdater : MonoBehaviour
 
         photoTaker.TakePhoto();
 
-        red.ReadColors();
+        //red.ReadColors();
         white.ReadColors();
         black.ReadColors();
-        green.ReadColors();
+        //green.ReadColors();
 
         visual.ShowGame();
         yield return new WaitForSeconds(captureRate);

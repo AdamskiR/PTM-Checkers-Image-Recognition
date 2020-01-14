@@ -17,6 +17,16 @@ public class TilesDetails
     {
     }
 
+    public TilesDetails(TilesDetails t)
+    {
+        this.tileName = t.tileName;
+        TileRepresentation3D = t.TileRepresentation3D;
+        this.tilePosition = t.tilePosition;
+        distanceToMarker = t.distanceToMarker;
+        occupiedBlack = t.occupiedBlack;
+        occupiedWhite = t.occupiedWhite;
+    }
+
     public TilesDetails(Vector3 pos)
     {
         tilePosition = pos;

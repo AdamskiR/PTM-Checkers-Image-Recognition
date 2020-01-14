@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,12 +14,12 @@ public class TimeMaster : MonoBehaviour
     // [SerializeField] TilesDetails[] currentBoard;
 
     [Header("checkers position")]
-    [SerializeField] TilesDetails[] previousWhiteTiles;
-    [SerializeField] TilesDetails[] previousBlackTiles;
-    [SerializeField] TilesDetails[] currentWhiteTiles;
-    [SerializeField] TilesDetails[] currentBlackTiles;
-   
+    [SerializeField] List<TilesDetails> previousWhiteTiles;
+    [SerializeField] List<TilesDetails> previousBlackTiles;
+    [SerializeField] List <TilesDetails> currentWhiteTiles;
+    [SerializeField] List <TilesDetails> currentBlackTiles;
 
+    public int same = 0;
     
    
     void Start()
@@ -30,51 +31,105 @@ public class TimeMaster : MonoBehaviour
 
     public void CheckMovement()
     {
-        if (FindObjectOfType<TileTracker>().RightTilesNumber() && play)
+        if (BoardDetected() && play)
         {
-            foreach (var t in FindObjectOfType<TileTracker>().AllTiles())
-            {
-                if (t.occupiedBlack) currentBlackTiles[currentBlackTiles.Length] = t;
-                if (t.occupiedWhite) currentWhiteTiles[currentWhiteTiles.Length] = t;
-            }
+
+            currentBlackTiles = FindObjectOfType<CheckersDetection>().blackTiles;
+            currentWhiteTiles = FindObjectOfType<CheckersDetection>().whiteTiles;
 
             diff = 0;
-                //check difrence in chekers position
-            for (int i=0;i< previousBlackTiles.Length;i++)
-                {
-                    if (currentBlackTiles[i].occupiedBlack != previousBlackTiles[i].occupiedBlack)
-                    {
-                        diff++;
-                    }
-                }
-
-            for (int i = 0; i < previousWhiteTiles.Length; i++)
+                
+            if (whiteTurn)
             {
-                if (currentWhiteTiles[i].occupiedBlack != previousWhiteTiles[i].occupiedBlack)
+                if (currentWhiteTiles.Count != previousWhiteTiles.Count) diff= -1; // return false;
+                else
                 {
-                    diff++;
-                }
-            }
-
-            if (diff == 2)
-                {
-                previousWhiteTiles = currentWhiteTiles;
-                previousBlackTiles = currentBlackTiles;
-
-                    if (!whiteTurn)
+                    same = 0;
+                    for (int i = 0; i < previousWhiteTiles.Count; i++)
                     {
-                        turn++;
-                        whiteTurn = true;
-                       
+                        for (int j = 0; j < currentWhiteTiles.Count; j++)
+                        {
+                            if (currentWhiteTiles[j].tileName == previousWhiteTiles[i].tileName)
+                            {
+                                same++;
+                                break;
+                            }
+                        }
                     }
-                    else
+
+                    if (same == previousWhiteTiles.Count-1)
                     {
-                        whiteTurn = false;
+                        previousWhiteTiles = new List<TilesDetails>(currentWhiteTiles);
+                        previousBlackTiles = new List<TilesDetails>(currentBlackTiles);
+                        if (!whiteTurn)
+                        {
+                            turn++;
+                            whiteTurn = true;
+
+                        }
+                        else
+                        {
+                            whiteTurn = false;
+                        }
+                        FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play);
+                        
                     }
-                    FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play);
+                    FindObjectOfType<TextManager>().UpdateCheckersNumber(previousWhiteTiles.Count,previousBlackTiles.Count);
                 }
                 
+
+            }
+            else
+            {
+                if (currentBlackTiles.Count != previousBlackTiles.Count) diff = -1; // return false;
+                else
+                {
+                    same = 0;
+                    for (int i = 0; i < previousBlackTiles.Count; i++)
+                    {
+                        for (int j = 0; j < currentBlackTiles.Count; j++)
+                        {
+                            if (currentBlackTiles[j].tileName == previousBlackTiles[i].tileName)
+                            {
+                                same++;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (same == previousBlackTiles.Count - 1)
+                    {
+                        previousWhiteTiles = new List<TilesDetails>(currentWhiteTiles);
+                        previousBlackTiles = new List<TilesDetails>(currentBlackTiles);
+                        if (!whiteTurn)
+                        {
+                            turn++;
+                            whiteTurn = true;
+
+                        }
+                        else
+                        {
+                            whiteTurn = false;
+                        }
+                        FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play);
+                    }
+                    FindObjectOfType<TextManager>().UpdateCheckersNumber(previousWhiteTiles.Count, previousBlackTiles.Count);
+                }
+
+            }
+
+                
         }
+        
+    }
+
+    private bool BoardDetected()
+    {
+        if (FindObjectOfType<BoardDetector>().AllTiles().Length == 32)
+        {
+            return true;
+        }
+        else return false;
     }
 
     public void PlayButton()
@@ -86,20 +141,25 @@ public class TimeMaster : MonoBehaviour
         }
         else
         {
-            var TT = FindObjectOfType<TileTracker>();
-            if (TT.RightTilesNumber())
-            {
-                int bIndex = 0, wIndex = 0;
-                foreach (var t in FindObjectOfType<TileTracker>().AllTiles())
+            if (BoardDetected())
+            { 
+            var board = FindObjectOfType<BoardDetector>();
+            var checkers = FindObjectOfType<CheckersDetection>();
+                if (board.RightTilesNumber())
                 {
-                    previousBlackTiles = new TilesDetails[TT.blackCheckers.Length];
-                    previousWhiteTiles = new TilesDetails[TT.whiteCheckers.Length];
-                    if (t.occupiedBlack) { previousBlackTiles[bIndex] = t; bIndex++; }
-                    if (t.occupiedWhite) { previousWhiteTiles[wIndex] = t; wIndex++; }
+                    int bIndex = 0, wIndex = 0;
+                    var tiles = checkers.AllTiles();
+
+                    previousBlackTiles = new List <TilesDetails> (FindObjectOfType<CheckersDetection>().blackTiles);
+                    previousWhiteTiles = new List<TilesDetails> (FindObjectOfType<CheckersDetection>().whiteTiles);
+
+                    play = true;
+                    FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play);
                 }
-                
-                play = true;
-                FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play);
+            }
+            else
+            {
+                //TODO show "Detect Board message first" text
             }
         }
     }
