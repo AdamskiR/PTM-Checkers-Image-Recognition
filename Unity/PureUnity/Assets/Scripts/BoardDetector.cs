@@ -13,7 +13,6 @@ public class BoardDetector : MonoBehaviour
 
     [Header("3D Objects")]
     [SerializeField] GameObject[] TileRepresentation3D;
-
     [SerializeField] int desirableTilesNumber = 32;
     [SerializeField] int markerTileA1Distance = 30;
 
@@ -45,14 +44,21 @@ public class BoardDetector : MonoBehaviour
 
     private void CalculateBoard()
     {
-        SetNumberOfObjects();
-        tiles = new TilesDetails[tilesNumber];
-        GetObjectsData();
-        SortTilesByCoordinates();
-        Link3DObjectsWithCameraInput();
+       // try
+        {
+            SetNumberOfObjects();
+            tiles = new TilesDetails[tilesNumber];
+            GetObjectsData();
+            SortTilesByCoordinates();
+            Link3DObjectsWithCameraInput();
 
-        FillCaptureTiles();
-        //FillNeighbours();
+            FillCaptureTiles();
+            FillNeighbours();
+        }
+       // catch (Exception e)
+        {
+          //  Debug.Log("Blad wykrywania planszy");
+        }
     }
 
     private void SetNumberOfObjects()
@@ -199,84 +205,84 @@ public class BoardDetector : MonoBehaviour
 
     }
 
-    private TilesDetails FindTile(string name)
+    private NeighbourTilesDetails FindTile(string name)
     {
         foreach (var t in tiles)
         {
-            if (t.tileName == name) return t;
+            if (t.tileName == name) return new NeighbourTilesDetails(t);
         }
         return null;
     }
 
     private void FillCaptureTiles()
     {
-        TilesDetails[] neighbours;
+        NeighbourTilesDetails[] neighbours;
 
         foreach (var t in tiles)
         {
             switch (t.tileName)
             {
                 case "A1":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
                     neighbours[0] = FindTile("C3");
                     t.captureTiles = neighbours;
                     break;
 
                 case "C1":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("C3");
                     neighbours[1] = FindTile("E3");
                     t.captureTiles = neighbours;
                     break;
 
                 case "E1":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("C3");
                     neighbours[1] = FindTile("G3");
                     t.captureTiles = neighbours;
                     break;
 
                 case "G1":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
                     neighbours[0] = FindTile("E3");
                     t.captureTiles = neighbours;
                     break;
 
                 case "B2":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
                     neighbours[0] = FindTile("D4");
                     t.captureTiles = neighbours;
                     break;
 
                 case "D2":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("B4");
                     neighbours[1] = FindTile("F4");
                     t.captureTiles = neighbours;
                     break;
 
                 case "F2":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("D4");
                     neighbours[1] = FindTile("H4");
                     t.captureTiles = neighbours;
                     break;
 
                 case "H2":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
                     neighbours[0] = FindTile("F4");
                     t.captureTiles = neighbours;
                     break;
 
                 case "A3":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("C1");
                     neighbours[1] = FindTile("C5");
                     t.captureTiles = neighbours;
                     break;
 
                 case "C3":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
                     neighbours[0] = FindTile("A1");
                     neighbours[1] = FindTile("E1");
                     neighbours[2] = FindTile("A5");
@@ -285,7 +291,7 @@ public class BoardDetector : MonoBehaviour
                     break;
 
                 case "E3":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
                     neighbours[0] = FindTile("C1");
                     neighbours[1] = FindTile("G1");
                     neighbours[2] = FindTile("C5");
@@ -294,21 +300,21 @@ public class BoardDetector : MonoBehaviour
                     break;
 
                 case "G3":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("E1");
                     neighbours[1] = FindTile("E5");
                     t.captureTiles = neighbours;
                     break;
 
                 case "B4":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("D2");
                     neighbours[1] = FindTile("D6");
                     t.captureTiles = neighbours;
                     break;
 
                 case "D4":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
                     neighbours[0] = FindTile("B2");
                     neighbours[1] = FindTile("F2");
                     neighbours[2] = FindTile("B6");
@@ -317,7 +323,7 @@ public class BoardDetector : MonoBehaviour
                     break;
 
                 case "F4":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
                     neighbours[0] = FindTile("D2");
                     neighbours[1] = FindTile("H2");
                     neighbours[2] = FindTile("D6");
@@ -326,21 +332,21 @@ public class BoardDetector : MonoBehaviour
                     break;
 
                 case "H4":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("F2");
                     neighbours[1] = FindTile("F6");
                     t.captureTiles = neighbours;
                     break;
 
                 case "A5":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("C3");
                     neighbours[1] = FindTile("C7");
                     t.captureTiles = neighbours;
                     break;
 
                 case "C5":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
                     neighbours[0] = FindTile("A3");
                     neighbours[1] = FindTile("E3");
                     neighbours[2] = FindTile("A7");
@@ -349,7 +355,7 @@ public class BoardDetector : MonoBehaviour
                     break;
 
                 case "E5":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
                     neighbours[0] = FindTile("C3");
                     neighbours[1] = FindTile("G3");
                     neighbours[2] = FindTile("C7");
@@ -358,21 +364,21 @@ public class BoardDetector : MonoBehaviour
                     break;
 
                 case "G5":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("E3");
                     neighbours[1] = FindTile("E7");
                     t.captureTiles = neighbours;
                     break;
 
                 case "B6":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("D4");
                     neighbours[1] = FindTile("D8");
                     t.captureTiles = neighbours;
                     break;
 
                 case "D6":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
                     neighbours[0] = FindTile("B4");
                     neighbours[1] = FindTile("F4");
                     neighbours[2] = FindTile("B8");
@@ -381,7 +387,7 @@ public class BoardDetector : MonoBehaviour
                     break;
 
                 case "F6":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
                     neighbours[0] = FindTile("D4");
                     neighbours[1] = FindTile("H4");
                     neighbours[2] = FindTile("D8");
@@ -390,60 +396,60 @@ public class BoardDetector : MonoBehaviour
                     break;
 
                 case "H6":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("F4");
                     neighbours[1] = FindTile("F8");
                     t.captureTiles = neighbours;
                     break;
 
                 case "A7":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
                     neighbours[0] = FindTile("C5");
                     t.captureTiles = neighbours;
                     break;
 
                 case "C7":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("A5");
                     neighbours[1] = FindTile("E5");
                     t.captureTiles = neighbours;
                     break;
 
                 case "E7":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("C5");
                     neighbours[1] = FindTile("G5");
                     t.captureTiles = neighbours;
                     break;
 
                 case "G7":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
                     neighbours[0] = FindTile("E5");
                     t.captureTiles = neighbours;
                     break;
 
                 case "B8":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
                     neighbours[0] = FindTile("D6");
                     t.captureTiles = neighbours;
                     break;
 
                 case "D8":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("B6");
                     neighbours[1] = FindTile("F6");
                     t.captureTiles = neighbours;
                     break;
 
                 case "F8":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
                     neighbours[0] = FindTile("D6");
                     neighbours[1] = FindTile("H8");
                     t.captureTiles = neighbours;
                     break;
 
                 case "H8":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
                     neighbours[0] = FindTile("F6");
                     t.captureTiles = neighbours;
                     break;
@@ -451,271 +457,559 @@ public class BoardDetector : MonoBehaviour
             }
         }
     }
-
+   
     private void FillNeighbours()
     {
-        TilesDetails[] neighbours;
+        NeighbourTilesDetails[] neighbours;
+        NeighbourTilesDetails[] blackNeighbours;
+        NeighbourTilesDetails[] whiteNeighbours;
 
         foreach (var t in tiles)
         {
             switch (t.tileName)
             {
                 case "A1":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
+                    whiteNeighbours = new NeighbourTilesDetails[1];
+
                     neighbours[0] = FindTile("B2");
+                    whiteNeighbours[0] = FindTile("B2");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
                     break;
 
                 case "C1":
-                    neighbours = new TilesDetails[2];
-                    neighbours[0] = FindTile("B2");
-                    neighbours[1] = FindTile("D2");
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[1];
+                    blackNeighbours = new NeighbourTilesDetails[1];
+
+                    neighbours[0] = FindTile("D2");
+                    neighbours[1] = FindTile("B2");
+                    whiteNeighbours[0] = FindTile("D2");
+                    blackNeighbours[0] = FindTile("B2");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "E1":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[1];
+                    blackNeighbours = new NeighbourTilesDetails[1];
+
                     neighbours[0] = FindTile("D2");
                     neighbours[1] = FindTile("F2");
+                    whiteNeighbours[0] = FindTile("F2");
+                    blackNeighbours[0] = FindTile("D2");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "G1":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[1];
+                    blackNeighbours = new NeighbourTilesDetails[1];
+
                     neighbours[0] = FindTile("F2");
                     neighbours[1] = FindTile("H2");
+                    whiteNeighbours[0] = FindTile("H2");
+                    blackNeighbours[0] = FindTile("F2");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "B2":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("A1");
                     neighbours[1] = FindTile("C1");
                     neighbours[2] = FindTile("A3");
                     neighbours[3] = FindTile("C3");
+                    whiteNeighbours[0] = FindTile("C1");
+                    whiteNeighbours[1] = FindTile("C3");
+                    blackNeighbours[0] = FindTile("A1");
+                    blackNeighbours[1] = FindTile("A3");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "D2":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("C1");
                     neighbours[1] = FindTile("E1");
                     neighbours[2] = FindTile("C3");
                     neighbours[3] = FindTile("E3");
+                    whiteNeighbours[0] = FindTile("E1");
+                    whiteNeighbours[1] = FindTile("E3");
+                    blackNeighbours[0] = FindTile("C1");
+                    blackNeighbours[1] = FindTile("C3");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "F2":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("E1");
                     neighbours[1] = FindTile("G1");
                     neighbours[2] = FindTile("E3");
                     neighbours[3] = FindTile("G3");
+                    whiteNeighbours[0] = FindTile("G1");
+                    whiteNeighbours[1] = FindTile("G3");
+                    blackNeighbours[0] = FindTile("E1");
+                    blackNeighbours[1] = FindTile("E3");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "H2":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[0];
+
                     neighbours[0] = FindTile("G1");
                     neighbours[1] = FindTile("G3");
+                    blackNeighbours[0] = FindTile("G1");
+                    blackNeighbours[1] = FindTile("G3");
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "A3":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[0];
+
                     neighbours[0] = FindTile("B2");
                     neighbours[1] = FindTile("B4");
+                    whiteNeighbours[0] = FindTile("B2");
+                    whiteNeighbours[1] = FindTile("B4");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "C3":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("B2");
                     neighbours[1] = FindTile("D2");
                     neighbours[2] = FindTile("B4");
                     neighbours[3] = FindTile("D4");
+                    whiteNeighbours[0] = FindTile("D2");
+                    whiteNeighbours[1] = FindTile("D4");
+                    blackNeighbours[0] = FindTile("B2");
+                    blackNeighbours[1] = FindTile("B4");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "E3":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("D2");
                     neighbours[1] = FindTile("F2");
                     neighbours[2] = FindTile("F4");
                     neighbours[3] = FindTile("D4");
+                    whiteNeighbours[0] = FindTile("F2");
+                    whiteNeighbours[1] = FindTile("F4");
+                    blackNeighbours[0] = FindTile("D2");
+                    blackNeighbours[1] = FindTile("D4");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "G3":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("F2");
                     neighbours[1] = FindTile("H2");
                     neighbours[2] = FindTile("F4");
                     neighbours[3] = FindTile("H4");
+                    whiteNeighbours[0] = FindTile("H2");
+                    whiteNeighbours[1] = FindTile("H4");
+                    blackNeighbours[0] = FindTile("F2");
+                    blackNeighbours[1] = FindTile("F4");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "B4":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("A3");
                     neighbours[1] = FindTile("C3");
                     neighbours[2] = FindTile("A5");
                     neighbours[3] = FindTile("C5");
+                    whiteNeighbours[0] = FindTile("C3");
+                    whiteNeighbours[1] = FindTile("C5");
+                    blackNeighbours[0] = FindTile("A3");
+                    blackNeighbours[1] = FindTile("A5");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "D4":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("C3");
                     neighbours[1] = FindTile("E3");
                     neighbours[2] = FindTile("C5");
                     neighbours[3] = FindTile("E5");
+                    whiteNeighbours[0] = FindTile("E3");
+                    whiteNeighbours[1] = FindTile("E5");
+                    blackNeighbours[0] = FindTile("C3");
+                    blackNeighbours[1] = FindTile("C5");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "F4":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("E3");
                     neighbours[1] = FindTile("G3");
                     neighbours[2] = FindTile("E5");
                     neighbours[3] = FindTile("G5");
+                    whiteNeighbours[0] = FindTile("G3");
+                    whiteNeighbours[1] = FindTile("G5");
+                    blackNeighbours[0] = FindTile("E3");
+                    blackNeighbours[1] = FindTile("E5");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "H4":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[0];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("G3");
                     neighbours[1] = FindTile("G5");
+                    blackNeighbours[0] = FindTile("G3");
+                    blackNeighbours[1] = FindTile("G5");
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "A5":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[0];
+
                     neighbours[0] = FindTile("B4");
                     neighbours[1] = FindTile("B6");
+                    whiteNeighbours[0] = FindTile("B4");
+                    whiteNeighbours[1] = FindTile("B6");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "C5":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("B4");
                     neighbours[1] = FindTile("D4");
                     neighbours[2] = FindTile("B6");
                     neighbours[3] = FindTile("D6");
+                    whiteNeighbours[0] = FindTile("D4");
+                    whiteNeighbours[1] = FindTile("D6");
+                    blackNeighbours[0] = FindTile("B4");
+                    blackNeighbours[1] = FindTile("B6");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "E5":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("D4");
                     neighbours[1] = FindTile("F4");
                     neighbours[2] = FindTile("D6");
                     neighbours[3] = FindTile("F6");
+                    whiteNeighbours[0] = FindTile("F4");
+                    whiteNeighbours[1] = FindTile("F6");
+                    blackNeighbours[0] = FindTile("D4");
+                    blackNeighbours[1] = FindTile("D6");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "G5":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("F4");
                     neighbours[1] = FindTile("H4");
                     neighbours[2] = FindTile("F6");
                     neighbours[3] = FindTile("H6");
+                    whiteNeighbours[0] = FindTile("H4");
+                    whiteNeighbours[1] = FindTile("H6");
+                    blackNeighbours[0] = FindTile("F4");
+                    blackNeighbours[1] = FindTile("F6");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "B6":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("C5");
                     neighbours[1] = FindTile("C5");
                     neighbours[2] = FindTile("A7");
                     neighbours[3] = FindTile("C7");
+                    whiteNeighbours[0] = FindTile("C5");
+                    whiteNeighbours[1] = FindTile("C7");
+                    blackNeighbours[0] = FindTile("A5");
+                    blackNeighbours[1] = FindTile("A7");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "D6":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("C5");
                     neighbours[1] = FindTile("E5");
                     neighbours[2] = FindTile("C7");
                     neighbours[3] = FindTile("E7");
+                    whiteNeighbours[0] = FindTile("E5");
+                    whiteNeighbours[1] = FindTile("E7");
+                    blackNeighbours[0] = FindTile("C5");
+                    blackNeighbours[1] = FindTile("C7");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "F6":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("E5");
                     neighbours[1] = FindTile("G5");
                     neighbours[2] = FindTile("E7");
                     neighbours[3] = FindTile("G7");
+                    whiteNeighbours[0] = FindTile("G5");
+                    whiteNeighbours[1] = FindTile("G7");
+                    blackNeighbours[0] = FindTile("E5");
+                    blackNeighbours[1] = FindTile("E7");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "H6":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[0];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("G5");
                     neighbours[1] = FindTile("G7");
+                    blackNeighbours[0] = FindTile("G5");
+                    blackNeighbours[1] = FindTile("G7");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "A7":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[0];
+
                     neighbours[0] = FindTile("B6");
-                    neighbours[1] = FindTile("C5");
+                    neighbours[1] = FindTile("B8");
+                    whiteNeighbours[0] = FindTile("B6");
+                    whiteNeighbours[1] = FindTile("B8");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "C7":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("B6");
                     neighbours[1] = FindTile("D6");
                     neighbours[2] = FindTile("C5");
                     neighbours[3] = FindTile("D8");
+                    whiteNeighbours[0] = FindTile("D6");
+                    whiteNeighbours[1] = FindTile("D8");
+                    blackNeighbours[0] = FindTile("B6");
+                    blackNeighbours[1] = FindTile("B8");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "E7":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("D6");
                     neighbours[1] = FindTile("F6");
                     neighbours[2] = FindTile("D8");
                     neighbours[3] = FindTile("F8");
+                    whiteNeighbours[0] = FindTile("F6");
+                    whiteNeighbours[1] = FindTile("F8");
+                    blackNeighbours[0] = FindTile("D6");
+                    blackNeighbours[1] = FindTile("D8");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "G7":
-                    neighbours = new TilesDetails[4];
+                    neighbours = new NeighbourTilesDetails[4];
+                    whiteNeighbours = new NeighbourTilesDetails[2];
+                    blackNeighbours = new NeighbourTilesDetails[2];
+
                     neighbours[0] = FindTile("F6");
                     neighbours[1] = FindTile("H6");
                     neighbours[2] = FindTile("F8");
                     neighbours[3] = FindTile("H8");
+                    whiteNeighbours[0] = FindTile("H6");
+                    whiteNeighbours[1] = FindTile("H8");
+                    blackNeighbours[0] = FindTile("F6");
+                    blackNeighbours[1] = FindTile("F8");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "B8":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[1];
+                    blackNeighbours = new NeighbourTilesDetails[1];
+
                     neighbours[0] = FindTile("A7");
                     neighbours[1] = FindTile("C7");
+                    whiteNeighbours[0] = FindTile("C7");
+                    blackNeighbours[0] = FindTile("A7");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "D8":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[1];
+                    blackNeighbours = new NeighbourTilesDetails[1];
+
                     neighbours[0] = FindTile("C7");
                     neighbours[1] = FindTile("E7");
+                    whiteNeighbours[0] = FindTile("E7");
+                    blackNeighbours[0] = FindTile("C7");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "F8":
-                    neighbours = new TilesDetails[2];
+                    neighbours = new NeighbourTilesDetails[2];
+                    whiteNeighbours = new NeighbourTilesDetails[1];
+                    blackNeighbours = new NeighbourTilesDetails[1];
+
                     neighbours[0] = FindTile("E7");
                     neighbours[1] = FindTile("G7");
+                    whiteNeighbours[0] = FindTile("G7");
+                    blackNeighbours[0] = FindTile("H8");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
                 case "H8":
-                    neighbours = new TilesDetails[1];
+                    neighbours = new NeighbourTilesDetails[1];
+                    whiteNeighbours = new NeighbourTilesDetails[0];
+                    blackNeighbours = new NeighbourTilesDetails[1];
+
                     neighbours[0] = FindTile("G7");
+                    blackNeighbours[0] = FindTile("G7");
+
                     t.neighborTiles = neighbours;
+                    t.neighborWhiteTiles = whiteNeighbours;
+                    t.neighborBlackTiles = blackNeighbours;
                     break;
 
             }

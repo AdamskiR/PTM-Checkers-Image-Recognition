@@ -35,7 +35,7 @@ public class CheckersDetection : MonoBehaviour
             blackCheckers = new Vector3[blackCheckerNumber];
             HideAll3DChecker();
 
-            try
+            //try
             {
                 GetObjectsData();
                 ClearTilesOccupation();
@@ -47,9 +47,9 @@ public class CheckersDetection : MonoBehaviour
 
                 FindObjectOfType<TimeMaster>().CheckMovement();
             }
-             catch (Exception e)
+             //catch (Exception e)
             {
-                Debug.Log("Nie ukonczono wizualizacji 3D");
+                //Debug.Log("Niepoprawnie zczytano pozycje pionkow");
             }
 
     }
@@ -94,12 +94,12 @@ public class CheckersDetection : MonoBehaviour
                 TileRepresentation3D[index].transform.position.y + 30, TileRepresentation3D[index].transform.position.z);
                 tiles[index].occupiedWhite = true;
                 whiteTiles.Add(tiles[index]);
-                Debug.Log("kurczak na polu: " + tiles[index].tileName);
+                //Debug.Log("kurczak na polu: " + tiles[index].tileName);
             }
 
             else
             {
-                Debug.Log("kaczka poza polem");
+                //Debug.Log("kaczka poza polem");
             }
         }
 
@@ -123,12 +123,12 @@ public class CheckersDetection : MonoBehaviour
                 TileRepresentation3D[index].transform.position.y + 30, TileRepresentation3D[index].transform.position.z);
                 tiles[index].occupiedBlack = true;
                 blackTiles.Add(tiles[index]);
-                Debug.Log("kurczak na polu: " + index);
+               // Debug.Log("kurczak na polu: " + index);
             }
 
             else
             {
-                Debug.Log("kaczka poza polem");
+               // Debug.Log("kaczka poza polem");
             }
         }
 

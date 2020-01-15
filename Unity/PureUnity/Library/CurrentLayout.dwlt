@@ -21,7 +21,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 548}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_MinSize: {x: 683, y: 498}
   m_MaxSize: {x: 14004, y: 14048}
   vertical: 0
-  controlID: 97
+  controlID: 11
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 498}
   m_MaxSize: {x: 10002, y: 14048}
   vertical: 1
-  controlID: 98
+  controlID: 12
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -160,11 +160,11 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 906
-    height: 361
+    height: 310
   m_MinSize: {x: 406, y: 224}
   m_MaxSize: {x: 8006, y: 4024}
   vertical: 0
-  controlID: 99
+  controlID: 13
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -183,7 +183,7 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 293
-    height: 361
+    height: 310
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
@@ -209,7 +209,7 @@ MonoBehaviour:
     x: 293
     y: 0
     width: 613
-    height: 361
+    height: 310
   m_MinSize: {x: 204, y: 224}
   m_MaxSize: {x: 4004, y: 4024}
   m_ActualView: {fileID: 14}
@@ -235,9 +235,9 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 361
+    y: 310
     width: 906
-    height: 274
+    height: 325
   m_MinSize: {x: 232, y: 274}
   m_MaxSize: {x: 10002, y: 10024}
   m_ActualView: {fileID: 16}
@@ -377,14 +377,14 @@ MonoBehaviour:
     x: 0
     y: 73
     width: 291
-    height: 341
+    height: 290
   m_PersistentViewDataDictionary: {fileID: 0}
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: e42f0100
       m_LastClickedID: 0
-      m_ExpandedIDs: 64beffff68beffff7abeffffbcc3ffff68dfffffd4fbffffe02c0000
+      m_ExpandedIDs: 1ceefffff6350000fc36000072380000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -432,17 +432,17 @@ MonoBehaviour:
     x: 293
     y: 73
     width: 609
-    height: 341
+    height: 290
   m_PersistentViewDataDictionary: {fileID: 0}
   m_WindowGUID: 23bc2d9c1c999dc4e826295598898fb7
   m_SceneLighting: 1
-  m_2DMode: 1
+  m_2DMode: 0
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 645.9954, y: 380.77335, z: 42}
+    m_Target: {x: 708.8002, y: 269.55606, z: 113.356995}
     speed: 2
-    m_Value: {x: 645.9954, y: 380.77335, z: 42}
+    m_Value: {x: 708.8002, y: 269.55606, z: 113.356995}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -462,27 +462,27 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
     yGrid:
-      m_Target: 0
-      speed: 2
-      m_Value: 0
-    zGrid:
       m_Target: 1
       speed: 2
       m_Value: 1
+    zGrid:
+      m_Target: 0
+      speed: 2
+      m_Value: 0
   m_Rotation:
-    m_Target: {x: 0, y: 0, z: 0, w: -1}
+    m_Target: {x: 0.00010053462, y: 0.9424841, z: -0.33425108, w: 0.00028323891}
     speed: 2
-    m_Value: {x: 0, y: 0, z: 0, w: -1}
+    m_Value: {x: 0.00010053463, y: 0.94248414, z: -0.33425108, w: 0.00028323891}
   m_Size:
-    m_Target: 754.4821
+    m_Target: 774.78906
     speed: 2
-    m_Value: 754.4821
+    m_Value: 774.78906
   m_Ortho:
-    m_Target: 1
+    m_Target: 0
     speed: 2
-    m_Value: 1
+    m_Value: 0
   m_ShowGlobalGrid: 1
-  m_LastSceneViewRotation: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
+  m_LastSceneViewRotation: {x: 0.00010053462, y: 0.9424841, z: -0.33425108, w: 0.00028323891}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
@@ -536,9 +536,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 434
+    y: 383
     width: 904
-    height: 254
+    height: 305
   m_PersistentViewDataDictionary: {fileID: 0}
   m_SearchFilter:
     m_NameFilter: 
@@ -552,20 +552,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Ustawienia kolorow
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Ustawienia kolorow
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\_Repo\Warcaby\Unity\PureUnity
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: cc290000
-    m_LastClickedID: 10700
-    m_ExpandedIDs: 00000000fa270000fe2a000000ca9a3b
+    m_SelectedIDs: 3c2c0100
+    m_LastClickedID: 76860
+    m_ExpandedIDs: 00000000223200003c3500007835000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -593,7 +593,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000fa270000fe2a0000
+    m_ExpandedIDs: 00000000223200003c350000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

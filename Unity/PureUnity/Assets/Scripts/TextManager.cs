@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
 public class TextManager : MonoBehaviour
@@ -19,6 +18,7 @@ public class TextManager : MonoBehaviour
     [SerializeField] Text playStopText;
     [SerializeField] Text whiteNumber;
     [SerializeField] Text blackNumber;
+    [SerializeField] Text moveText;
 
     void Start()
     {
@@ -27,10 +27,11 @@ public class TextManager : MonoBehaviour
         playStopText.text = "Play";
         whiteNumber.text = "White: calculating";
         blackNumber.text = "Black: calculating";
+        moveText.text = "White first";
     }
 
     // Update is called once per frame
-    public void UpdateText(int turn, bool white, bool play)
+    public void UpdateText(int turn, bool white, bool play, string move)
     {
         turnText.text = "Turn: " + turn.ToString();
 
@@ -39,6 +40,8 @@ public class TextManager : MonoBehaviour
 
         if (play) playStopText.text = "Stop";
         else playStopText.text = "Play";
+
+        moveText.text = move;
     }
 
     public void UpdateCheckersNumber(int white, int black)
