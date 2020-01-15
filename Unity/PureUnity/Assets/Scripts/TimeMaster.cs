@@ -185,20 +185,55 @@ public class TimeMaster : MonoBehaviour
                     {
                     if (previousTile.neighborTiles[i].tileName == newTile.neighborTiles[j].tileName)
                     {
-                        if (!previousTile.neighborTiles[i].occupiedWhite && !previousTile.neighborTiles[i].occupiedBlack) return true;
-                    }
+                            Debug.Log("Pole 'bicia':" + previousTile.neighborTiles[i].tileName+ " oraz "+newTile.neighborTiles[j].tileName);
+                        if (previousTile.neighborTiles[i].occupiedWhite || previousTile.neighborTiles[i].occupiedBlack)
+                            if (!newTile.neighborTiles[i].occupiedWhite && !newTile.neighborTiles[i].occupiedBlack) return true;
+                        }
                 }
             }
         }
         return false;
     }
 
+    private void MakePRevoiusListCurrent(CheckersDetection checkers)
+    {
+        for (int i = 0; i < checkers.blackTiles.Count; i++)
+            previousBlackTiles.Add(new TilesDetails
+            {
+                tileName = checkers.blackTiles[i].tileName,
+                TileRepresentation3D = checkers.blackTiles[i].TileRepresentation3D,
+                tilePosition = checkers.blackTiles[i].tilePosition,
+                distanceToMarker = checkers.blackTiles[i].distanceToMarker,
+                occupiedBlack = checkers.blackTiles[i].occupiedBlack,
+                occupiedWhite = checkers.blackTiles[i].occupiedWhite,
+                neighborTiles = checkers.blackTiles[i].neighborTiles,
+                neighborWhiteTiles = checkers.blackTiles[i].neighborWhiteTiles,
+                neighborBlackTiles = checkers.blackTiles[i].neighborBlackTiles,
+                captureTiles = checkers.blackTiles[i].captureTiles
+            });
+        for (int i = 0; i < checkers.whiteTiles.Count; i++)
+            previousWhiteTiles.Add(new TilesDetails
+            {
+                tileName = checkers.whiteTiles[i].tileName,
+                TileRepresentation3D = checkers.whiteTiles[i].TileRepresentation3D,
+                tilePosition = checkers.whiteTiles[i].tilePosition,
+                distanceToMarker = checkers.whiteTiles[i].distanceToMarker,
+                occupiedBlack = checkers.whiteTiles[i].occupiedBlack,
+                occupiedWhite = checkers.whiteTiles[i].occupiedWhite,
+                neighborTiles = checkers.whiteTiles[i].neighborTiles,
+                neighborWhiteTiles = checkers.whiteTiles[i].neighborWhiteTiles,
+                neighborBlackTiles = checkers.whiteTiles[i].neighborBlackTiles,
+                captureTiles = checkers.whiteTiles[i].captureTiles
+            });
+    }
+
+
     public void CheckMovement()
     {
         if (BoardDetected() && play)
         {
-            currentBlackTiles = FindObjectOfType<CheckersDetection>().blackTiles;
-            currentWhiteTiles = FindObjectOfType<CheckersDetection>().whiteTiles;
+            currentBlackTiles = new List<TilesDetails>(FindObjectOfType<CheckersDetection>().blackTiles);
+            currentWhiteTiles = new List <TilesDetails>(FindObjectOfType<CheckersDetection>().whiteTiles);
 
             diff = 0;
                 
@@ -225,9 +260,39 @@ public class TimeMaster : MonoBehaviour
                             }
                             FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move);
                         }
+                        else
+                        {
+                            Debug.Log("Nie wykonano ruchu bez bicia");
+                            Debug.Log("Bicie: " + PreviousTile(whiteTurn).tileName + "->->->" + NewTile(whiteTurn).tileName);
+                            foreach(var pt in PreviousTile(whiteTurn).neighborTiles)
+                            Debug.Log(pt.occupiedBlack);
+                            if (LegalCapturePosition(PreviousTile(whiteTurn), NewTile(whiteTurn)))
+                            {
+                                
+                                string move = "Move: " + PreviousTile(whiteTurn).tileName + " -> " + NewTile(whiteTurn).tileName;
+
+
+                                previousWhiteTiles = new List<TilesDetails>(currentWhiteTiles);
+                                previousBlackTiles = new List<TilesDetails>(currentBlackTiles);
+                                if (!whiteTurn)
+                                {
+                                    turn++;
+                                    whiteTurn = true;
+
+                                }
+                                else
+                                {
+                                    whiteTurn = false;
+                                }
+                                FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move);
+                            }
+                            else Debug.Log("Nie wykonano bicia");
+                        }
                     }
-                    FindObjectOfType<TextManager>().UpdateCheckersNumber(previousWhiteTiles.Count,previousBlackTiles.Count);
+                    else Debug.Log("Nie wykonano ruchu, lub wykonano ich zbyt wiele");
+                    FindObjectOfType<TextManager>().UpdateCheckersNumber(previousWhiteTiles.Count, previousBlackTiles.Count);
                 }
+                else Debug.Log("Stracono poionki");
                 
 
             }
@@ -254,15 +319,40 @@ public class TimeMaster : MonoBehaviour
                             }
                             FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move);
                         }
+                        else
+                        {
+                            Debug.Log("Nie wykonano ruchu bez bicia");
+
+
+                            if (LegalCapturePosition(PreviousTile(whiteTurn), NewTile(whiteTurn)))
+                            {
+                                string move = "Move: " + PreviousTile(whiteTurn).tileName + " ->->-> " + NewTile(whiteTurn).tileName;
+                                previousWhiteTiles = new List<TilesDetails>(currentWhiteTiles);
+                                previousBlackTiles = new List<TilesDetails>(currentBlackTiles);
+                                if (!whiteTurn)
+                                {
+                                    turn++;
+                                    whiteTurn = true;
+
+                                }
+                                else
+                                {
+                                    whiteTurn = false;
+                                }
+                                FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move);
+                            }
+                            else Debug.Log("Nie wykonano bicia");
+
+
+                        }
                     }
+                    else Debug.Log("Nie wykonano ruchu, lub wykonano ich zbyt wiele");
                     FindObjectOfType<TextManager>().UpdateCheckersNumber(previousWhiteTiles.Count, previousBlackTiles.Count);
 
                 }
-            }
-
-                
+                else Debug.Log("Stracono poionki");
+            }     
         }
-        
     }
 
     private bool BoardDetected()
@@ -289,11 +379,33 @@ public class TimeMaster : MonoBehaviour
             var checkers = FindObjectOfType<CheckersDetection>();
                 if (board.RightTilesNumber())
                 {
-                    int bIndex = 0, wIndex = 0;
-                    var tiles = checkers.AllTiles();
-
-                    previousBlackTiles = new List <TilesDetails> (FindObjectOfType<CheckersDetection>().blackTiles);
-                    previousWhiteTiles = new List<TilesDetails> (FindObjectOfType<CheckersDetection>().whiteTiles);
+                    for (int i = 0; i < checkers.blackTiles.Count; i++)
+                        previousBlackTiles.Add(new TilesDetails {
+                            tileName = checkers.blackTiles[i].tileName,
+                            TileRepresentation3D = checkers.blackTiles[i].TileRepresentation3D,
+                            tilePosition = checkers.blackTiles[i].tilePosition,
+                            distanceToMarker = checkers.blackTiles[i].distanceToMarker,
+                            occupiedBlack = checkers.blackTiles[i].occupiedBlack,
+                            occupiedWhite = checkers.blackTiles[i].occupiedWhite,
+                            neighborTiles = checkers.blackTiles[i].neighborTiles,
+                            neighborWhiteTiles = checkers.blackTiles[i].neighborWhiteTiles,
+                            neighborBlackTiles = checkers.blackTiles[i].neighborBlackTiles,
+                            captureTiles = checkers.blackTiles[i].captureTiles
+                        } );
+                    for (int i = 0; i < checkers.whiteTiles.Count; i++)
+                        previousWhiteTiles.Add(new TilesDetails
+                        {
+                            tileName = checkers.whiteTiles[i].tileName,
+                            TileRepresentation3D = checkers.whiteTiles[i].TileRepresentation3D,
+                            tilePosition = checkers.whiteTiles[i].tilePosition,
+                            distanceToMarker = checkers.whiteTiles[i].distanceToMarker,
+                            occupiedBlack = checkers.whiteTiles[i].occupiedBlack,
+                            occupiedWhite = checkers.whiteTiles[i].occupiedWhite,
+                            neighborTiles = checkers.whiteTiles[i].neighborTiles,
+                            neighborWhiteTiles = checkers.whiteTiles[i].neighborWhiteTiles,
+                            neighborBlackTiles = checkers.whiteTiles[i].neighborBlackTiles,
+                            captureTiles = checkers.whiteTiles[i].captureTiles
+                        });
 
                     play = true;
                     FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "white first");

@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [System.Serializable]
-public class TilesDetails
+public class TilesDetails 
 {
     public string tileName;
     public GameObject TileRepresentation3D;
@@ -19,6 +20,7 @@ public class TilesDetails
     {
     }
 
+
     public TilesDetails(TilesDetails t)
     {
         tileName = t.tileName;
@@ -27,6 +29,7 @@ public class TilesDetails
         distanceToMarker = t.distanceToMarker;
         occupiedBlack = t.occupiedBlack;
         occupiedWhite = t.occupiedWhite;
+
     }
 
     public TilesDetails(Vector3 pos)

@@ -112,9 +112,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imagePath: /CameraPictures/CameraInput.png
   HvalueMin: 0.2
-  HvalueMax: 0.4
+  HvalueMax: 0.5
   Svalue: 0.7
-  Vvalue: 0.7
+  Vvalue: 0.6
   ObjectsDetectionRange: 50
   middlePoints: []
   ListOfAllGroups:

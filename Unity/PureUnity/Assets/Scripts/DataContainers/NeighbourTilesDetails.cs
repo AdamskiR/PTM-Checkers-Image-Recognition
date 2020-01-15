@@ -21,4 +21,13 @@ public class NeighbourTilesDetails
         occupiedBlack = t.occupiedBlack;
         occupiedWhite = t.occupiedWhite;
     }
+
+    public NeighbourTilesDetails(NeighbourTilesDetails t)
+    {
+        tileName = t.tileName;
+        TileRepresentation3D = t.TileRepresentation3D;
+        occupiedBlack = t.occupiedBlack;
+        occupiedWhite = t.occupiedWhite;
+        captureTiles = t.captureTiles;
+    }
 }

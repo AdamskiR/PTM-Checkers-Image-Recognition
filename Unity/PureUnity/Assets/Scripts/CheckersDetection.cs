@@ -40,13 +40,13 @@ public class CheckersDetection : MonoBehaviour
                 GetObjectsData();
                 ClearTilesOccupation();
 
-                //SortTilesByCoordinates();
-                //Link3DObjectsWithCameraInput();
+            //SortTilesByCoordinates();
+            //Link3DObjectsWithCameraInput();
+            
+            PutCheckersOnTiles();
+            FindObjectOfType<TimeMaster>().CheckMovement();
 
-                PutCheckersOnTiles();
-
-                FindObjectOfType<TimeMaster>().CheckMovement();
-            }
+        }
              //catch (Exception e)
             {
                 //Debug.Log("Niepoprawnie zczytano pozycje pionkow");
