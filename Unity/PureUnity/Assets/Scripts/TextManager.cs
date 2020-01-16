@@ -19,6 +19,7 @@ public class TextManager : MonoBehaviour
     [SerializeField] Text whiteNumber;
     [SerializeField] Text blackNumber;
     [SerializeField] Text moveText;
+    [SerializeField] Text statusText;
 
     void Start()
     {
@@ -31,7 +32,7 @@ public class TextManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void UpdateText(int turn, bool white, bool play, string move)
+    public void UpdateText(int turn, bool white, bool play, string move, string status)
     {
         turnText.text = "Turn: " + turn.ToString();
 
@@ -42,6 +43,7 @@ public class TextManager : MonoBehaviour
         else playStopText.text = "Play";
 
         moveText.text = move;
+        statusText.text = status;
     }
 
     public void UpdateCheckersNumber(int white, int black)

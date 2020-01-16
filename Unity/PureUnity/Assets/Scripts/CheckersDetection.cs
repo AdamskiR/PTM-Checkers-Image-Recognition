@@ -10,8 +10,8 @@ public class CheckersDetection : MonoBehaviour
     public Vector3[] whiteCheckers;
     public Vector3[] blackCheckers;
     [SerializeField] TilesDetails[] tiles;
-    public List <TilesDetails> whiteTiles;
-    public List <TilesDetails> blackTiles;
+    public List<TilesDetails> whiteTiles;
+    public List<TilesDetails> blackTiles;
 
     [Header("3D Objects")]
     [SerializeField] GameObject[] whiteRepresentation3D = new GameObject[20];
@@ -25,55 +25,60 @@ public class CheckersDetection : MonoBehaviour
     private int whiteCheckerNumber;
     private int blackCheckerNumber;
 
-   public  void CalculateTiles()
+    public void CalculateTiles()
     {
         SetNumberOfObjects();
 
         tiles = FindObjectOfType<BoardDetector>().AllTiles();
 
-            whiteCheckers = new Vector3[whiteCheckerNumber];
-            blackCheckers = new Vector3[blackCheckerNumber];
-            HideAll3DChecker();
+        whiteCheckers = new Vector3[whiteCheckerNumber];
+        blackCheckers = new Vector3[blackCheckerNumber];
+        HideAll3DChecker();
 
-            //try
-            {
-                GetObjectsData();
-                ClearTilesOccupation();
-
-            //SortTilesByCoordinates();
-            //Link3DObjectsWithCameraInput();
-            
+       // try
+        {
+            GetObjectsData();
+            ClearTilesOccupation();
             PutCheckersOnTiles();
             FindObjectOfType<TimeMaster>().CheckMovement();
 
         }
-             //catch (Exception e)
-            {
-                //Debug.Log("Niepoprawnie zczytano pozycje pionkow");
-            }
+       // catch (Exception e)
+        {
+         //   Debug.Log("Niepoprawnie zczytano pozycje pionkow");
+        }
 
     }
 
 
-    public TilesDetails[] AllTiles ()
+    public TilesDetails[] AllTiles()
     {
         return tiles;
     }
 
     private void ClearTilesOccupation()
     {
-        for (int i = 0; i<tiles.Length;i++)
+        try
         {
-           tiles[i].occupiedBlack = false;
-            tiles[i].occupiedWhite = false;
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                tiles[i].occupiedBlack = false;
+                tiles[i].occupiedWhite = false;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Problem z czyszczeniem");
         }
     }
 
     private void PutCheckersOnTiles()
     {
+        try
+        { 
         whiteTiles.Clear();
         blackTiles.Clear();
-       TileRepresentation3D = FindObjectOfType<BoardDetector>().AllTileRepresentation3D();
+        TileRepresentation3D = FindObjectOfType<BoardDetector>().AllTileRepresentation3D();
         for (int i = 0; i < whiteCheckers.Length; i++)
         {
             int index = -1;
@@ -94,12 +99,6 @@ public class CheckersDetection : MonoBehaviour
                 TileRepresentation3D[index].transform.position.y + 30, TileRepresentation3D[index].transform.position.z);
                 tiles[index].occupiedWhite = true;
                 whiteTiles.Add(tiles[index]);
-                //Debug.Log("kurczak na polu: " + tiles[index].tileName);
-            }
-
-            else
-            {
-                //Debug.Log("kaczka poza polem");
             }
         }
 
@@ -123,137 +122,35 @@ public class CheckersDetection : MonoBehaviour
                 TileRepresentation3D[index].transform.position.y + 30, TileRepresentation3D[index].transform.position.z);
                 tiles[index].occupiedBlack = true;
                 blackTiles.Add(tiles[index]);
-               // Debug.Log("kurczak na polu: " + index);
             }
 
-            else
-            {
-               // Debug.Log("kaczka poza polem");
-            }
+        }
+    }
+        catch (Exception e)
+        {
+            Debug.Log("Problem ze spawnowaniem pionkow");
         }
 
     }
 
-    private void Link3DObjectsWithCameraInput()
-    {
-        /*for (int i = 0; i < tilesNumber; i++)
-        {
-            tiles[i].TileRepresentation3D = TileRepresentation3D[i];
-            tiles[i].tileName = TileRepresentation3D[i].GetComponent<TileName>().tileName;
-        }*/
-    }
-
-
-    private void SortTilesByCoordinates()
-    {/*
-        tiles = tiles.OrderBy(x => x.distanceToMarker).ToArray();
-        float cornerRU = tiles[0].tilePosition.y - marker.y;
-        float cornerLD = marker.y - tiles[0].tilePosition.y;
-        float cornerLU = marker.x - tiles[0].tilePosition.x;
-        float cornerRD = tiles[0].tilePosition.x - marker.x;
-        Debug.Log("RU: " + cornerRU +", RD"+cornerRD + " ,LD" + cornerLD+ " ,LU" + cornerLU);
-
-        if (cornerRU > markerTileA1Distance)
-        {
-
-            tiles = tiles.OrderBy(x => x.tilePosition.y).ToArray();
-            double numberOfTilesInRowD = Math.Sqrt(tilesNumber * 2) / 2;
-            int numberOfTilesInRow = (int)Math.Round(numberOfTilesInRowD);
-            for (int i = 0; i < numberOfTilesInRow * 2; i++)
-            {
-                TilesDetails[] tilesInRow = new TilesDetails[numberOfTilesInRow];
-                for (int j = 0; j < numberOfTilesInRow; j++)
-                {
-                    tilesInRow[j] = tiles[i * numberOfTilesInRow + j];
-                }
-                tilesInRow = tilesInRow.OrderBy(x => x.tilePosition.x).ToArray();
-                for (int j = 0; j < numberOfTilesInRow; j++)
-                {
-                    tiles[i * numberOfTilesInRow + j] = tilesInRow[j];
-                }
-            }
-
-        }
-
-        if (cornerRD > markerTileA1Distance)
-        {
-            tiles = tiles.OrderBy(x => x.tilePosition.x).ToArray();
-            double numberOfTilesInRowD = Math.Sqrt(tilesNumber * 2) / 2;
-            int numberOfTilesInRow = (int)Math.Round(numberOfTilesInRowD);
-            for (int i = 0; i < numberOfTilesInRow * 2; i++)
-            {
-                TilesDetails[] tilesInRow = new TilesDetails[numberOfTilesInRow];
-                for (int j = 0; j < numberOfTilesInRow; j++)
-                {
-                    tilesInRow[j] = tiles[i * numberOfTilesInRow + j];
-                }
-                tilesInRow = tilesInRow.OrderByDescending(x => x.tilePosition.y).ToArray();
-                for (int j = 0; j < numberOfTilesInRow; j++)
-                {
-                    tiles[i * numberOfTilesInRow + j] = tilesInRow[j];
-                }
-            }
-        }
-
-        if (cornerLU > markerTileA1Distance)
-        {
-            tiles = tiles.OrderByDescending(x => x.tilePosition.x).ToArray();
-            double numberOfTilesInRowD = Math.Sqrt(tilesNumber * 2) / 2;
-            int numberOfTilesInRow = (int)Math.Round(numberOfTilesInRowD);
-            for (int i = 0; i < numberOfTilesInRow * 2; i++)
-            {
-                TilesDetails[] tilesInRow = new TilesDetails[numberOfTilesInRow];
-                for (int j = 0; j < numberOfTilesInRow; j++)
-                {
-                    tilesInRow[j] = tiles[i * numberOfTilesInRow + j];
-                }
-                tilesInRow = tilesInRow.OrderBy(x => x.tilePosition.y).ToArray();
-                for (int j = 0; j < numberOfTilesInRow; j++)
-                {
-                    tiles[i * numberOfTilesInRow + j] = tilesInRow[j];
-                }
-            }
-        }
-
-        if (cornerLD > markerTileA1Distance)
-        {
-            tiles = tiles.OrderByDescending(x => x.tilePosition.y).ToArray();
-            double numberOfTilesInRowD = Math.Sqrt(tilesNumber * 2) / 2;
-            int numberOfTilesInRow = (int)Math.Round(numberOfTilesInRowD);
-            for (int i = 0; i < numberOfTilesInRow * 2; i++)
-            {
-                TilesDetails[] tilesInRow = new TilesDetails[numberOfTilesInRow];
-                for (int j = 0; j < numberOfTilesInRow; j++)
-                {
-                    tilesInRow[j] = tiles[i * numberOfTilesInRow + j];
-                }
-                tilesInRow = tilesInRow.OrderByDescending(x => x.tilePosition.x).ToArray();
-                for (int j = 0; j < numberOfTilesInRow; j++)
-                {
-                    tiles[i * numberOfTilesInRow + j] = tilesInRow[j];
-                }
-            }
-        }
-        */
-    }
 
     private void GetObjectsData()
     {
         try
         {
 
-        for (int i = 0; i<whiteCheckerNumber; i++)
+            for (int i = 0; i < whiteCheckerNumber; i++)
             {
                 whiteCheckers[i] = new Vector3(FindObjectOfType<ReadColorWhiteinHSV>().middlePoints[i].x, FindObjectOfType<ReadColorWhiteinHSV>().middlePoints[i].y, 1);
             }
-        for (int i = 0; i < blackCheckerNumber; i++)
+            for (int i = 0; i < blackCheckerNumber; i++)
             {
                 blackCheckers[i] = new Vector3(FindObjectOfType<ReadColorBlackinHSV>().middlePoints[i].x, FindObjectOfType<ReadColorBlackinHSV>().middlePoints[i].y, 1);
             }
         }
         catch (Exception e)
         {
-                  Debug.Log("Nie odczytano koordynatnow pionkow");
+            Debug.Log("Nie odczytano koordynatnow pionkow");
         }
     }
 
@@ -280,5 +177,5 @@ public class CheckersDetection : MonoBehaviour
         if (blackCheckerNumber > 16) blackCheckerNumber = 16;
     }
 
-   
+
 }

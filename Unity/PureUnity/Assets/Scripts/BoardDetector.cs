@@ -44,7 +44,7 @@ public class BoardDetector : MonoBehaviour
 
     private void CalculateBoard()
     {
-       // try
+        try
         {
             SetNumberOfObjects();
             tiles = new TilesDetails[tilesNumber];
@@ -55,9 +55,9 @@ public class BoardDetector : MonoBehaviour
             FillCaptureTiles();
             FillNeighbours();
         }
-       // catch (Exception e)
+        catch (Exception e)
         {
-          //  Debug.Log("Blad wykrywania planszy");
+            Debug.Log("Blad wykrywania planszy");
         }
     }
 

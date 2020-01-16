@@ -10,6 +10,7 @@ public class TilesDetails
     public float distanceToMarker;
     public bool occupiedWhite = false;
     public bool occupiedBlack = false;
+    public bool king = false;
     public NeighbourTilesDetails[] neighborTiles;
     public NeighbourTilesDetails[] neighborWhiteTiles;
     public NeighbourTilesDetails[] neighborBlackTiles;
