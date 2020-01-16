@@ -31,7 +31,14 @@ public class CameraInput : MonoBehaviour
         File.WriteAllBytes(Application.dataPath + "/CameraPictures/CameraInput.png", bytes);
     }
 
-    void OnGUI()
+    public void SwitchWebcamera()
+    {
+        webCamTexture.Stop();
+        webCamTexture.deviceName = (webCamTexture.deviceName == devices[0].name) ? devices[1].name : devices[0].name;
+        webCamTexture.Play();
+    }
+
+   /* void OnGUI()
     {
         GUIStyle customButton = ("button");
         customButton.fontSize = 36;
@@ -42,5 +49,6 @@ public class CameraInput : MonoBehaviour
             webCamTexture.deviceName = (webCamTexture.deviceName == devices[0].name) ? devices[1].name : devices[0].name;
             webCamTexture.Play();
         }
-    }
+    }*/
+
 }

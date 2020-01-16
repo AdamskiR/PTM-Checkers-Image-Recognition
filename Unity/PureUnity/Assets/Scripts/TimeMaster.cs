@@ -17,6 +17,7 @@ public class TimeMaster : MonoBehaviour
     [SerializeField] List<TilesDetails> currentBlackTiles;
 
     public int same = 0;
+    bool capturingPending = false;
 
 
     void Start()
@@ -243,12 +244,18 @@ public class TimeMaster : MonoBehaviour
             {
                 foreach (var nt in previousTile.neighborTiles)
                 {
-                    if (pt.tileName == nt.tileName)
+
+
+                    foreach (var t in FindTile(pt.tileName).neighborTiles)
                     {
-                        if (nt.occupiedBlack)
+                        Debug.Log("Bicie: " + t.tileName + " sasiad " + nt.tileName);
+                        if (t.tileName == nt.tileName)
                         {
-                            Debug.Log("Bij dalej na pole: " + nt.tileName);
-                            return true;
+                            if (FindTile(nt.tileName).occupiedBlack)
+                            {
+                                Debug.Log("Bij dalej na pole: " + pt.tileName);
+                                return true;
+                            }
                         }
                     }
                 }
@@ -265,11 +272,17 @@ public class TimeMaster : MonoBehaviour
             {
                 foreach (var nt in previousTile.neighborTiles)
                 {
-                    if (pt.tileName == nt.tileName)
+
+
+                    foreach (var t in FindTile(pt.tileName).neighborTiles)
                     {
-                        if (nt.occupiedBlack)
+                        Debug.Log("Bicie: " + t.tileName + " sasiad " + nt.tileName);
+                        if (t.tileName == nt.tileName)
                         {
-                            return FindTile(nt.tileName);
+                            if (FindTile(nt.tileName).occupiedBlack)
+                            {
+                                return FindTile(nt.tileName);
+                            }
                         }
                     }
                 }
@@ -286,11 +299,17 @@ public class TimeMaster : MonoBehaviour
             {
                 foreach (var nt in previousTile.neighborTiles)
                 {
-                    if (pt.tileName == nt.tileName)
+
+
+                    foreach (var t in FindTile(pt.tileName).neighborTiles)
                     {
-                        if (nt.occupiedBlack)
+                        Debug.Log("Bicie: " + t.tileName + " sasiad " + nt.tileName);
+                        if (t.tileName == nt.tileName)
                         {
-                            return FindTile(pt.tileName);
+                            if (FindTile(nt.tileName).occupiedBlack)
+                            {
+                                return FindTile(pt.tileName);
+                            }
                         }
                     }
                 }
@@ -602,7 +621,18 @@ public class TimeMaster : MonoBehaviour
         }
     }
 
+    IEnumerator ContinueCaptureing(TilesDetails finalPosition)
+    {
+        Debug.Log("Bij na pole: " + FurtherCaptureEnd(finalPosition));
+        if (FurtherCaptureTarget(finalPosition).occupiedBlack && !FurtherCaptureEnd(finalPosition).occupiedWhite && !OneWhiteCheckerMoved())
+            capturingPending = false;
+        else
+        {
+            Debug.Log("Bij na pole: " + FurtherCaptureEnd(finalPosition));
+            yield return new WaitForSeconds(1);
+        }
 
+    }
 
     public void CheckMovement()
     {
@@ -612,6 +642,7 @@ public class TimeMaster : MonoBehaviour
 
             if (whiteTurn)
             {
+                if (!capturingPending)
                 if (WhiteNumberSame() && OneWhiteCheckerMoved())
                 {
                     if (PreviousTile() != null && NewTile() != null)
@@ -643,28 +674,44 @@ public class TimeMaster : MonoBehaviour
                                     neighborBlackTiles = NewTile().neighborBlackTiles,
                                     captureTiles = NewTile().captureTiles
                                 };
+
                                 string move = "";
                                 if (whiteTurn) { move = "Move: W " + PreviousTile().tileName + " -> " + NewTile().tileName; }
                                 else { move = "Move: B " + PreviousTile().tileName + " -> " + NewTile().tileName; }
                                 MakePrevoiusListCurrent(currentWhiteTiles, currentBlackTiles);
                                 FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move, "Wykonano ruch");
+
                                 for (int i=0;i<12;i++)
                                 {
+                                    Debug.Log("Można dalej bić: " + FurtherCapturePossible(finalPosition)+" bo na "+finalPosition.tileName);
                                     if (FurtherCapturePossible(finalPosition))
                                     {
-                                        while (!FurtherCaptureTarget(finalPosition).occupiedBlack && FurtherCaptureEnd(finalPosition).occupiedWhite && OneWhiteCheckerMoved())
-                                        {
-                                            Debug.Log("Bij na pole: " + FurtherCaptureEnd(finalPosition));
-                                        }
+                                        capturingPending = true;
+                                        StartCoroutine(ContinueCaptureing(finalPosition));
+                                        break;
+                                        if (whiteTurn) { move = "Move: W " + PreviousTile().tileName + " -> " + NewTile().tileName; }
+                                        else { move = "Move: B " + PreviousTile().tileName + " -> " + NewTile().tileName; }
+                                        MakePrevoiusListCurrent(currentWhiteTiles, currentBlackTiles);
 
                                     }
                                     else
                                     {
-
+                                        Debug.Log("Nie można dalej bić: " + FurtherCapturePossible(finalPosition));
+                                        break;
                                     }
                                 }
-                                
-                                
+                                if (!whiteTurn && !capturingPending)
+                                {
+                                    turn++;
+                                    whiteTurn = true;
+                                    FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move, "Wykonano ruch");
+                                }
+                                else
+                                {
+                                    whiteTurn = false;
+                                    FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move, "Wykonano ruch");
+
+                                }
                             }
                             else
                             {
@@ -736,6 +783,7 @@ public class TimeMaster : MonoBehaviour
             previousWhiteTiles.Clear();
             currentBlackTiles.Clear();
             currentWhiteTiles.Clear();
+            FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "white first", "Gra zatrzymana");
         }
         else
         {
