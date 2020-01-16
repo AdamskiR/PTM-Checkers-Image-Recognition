@@ -96,7 +96,7 @@ public class CheckersDetection : MonoBehaviour
             if (index > -1)
             {
                 whiteRepresentation3D[i].transform.position = new Vector3(TileRepresentation3D[index].transform.position.x,
-                TileRepresentation3D[index].transform.position.y + 30, TileRepresentation3D[index].transform.position.z);
+                TileRepresentation3D[index].transform.position.y + 20, TileRepresentation3D[index].transform.position.z);
                 tiles[index].occupiedWhite = true;
                 whiteTiles.Add(tiles[index]);
             }
@@ -119,7 +119,7 @@ public class CheckersDetection : MonoBehaviour
             if (index > -1)
             {
                 blackRepresentation3D[i].transform.position = new Vector3(TileRepresentation3D[index].transform.position.x,
-                TileRepresentation3D[index].transform.position.y + 30, TileRepresentation3D[index].transform.position.z);
+                TileRepresentation3D[index].transform.position.y + 20, TileRepresentation3D[index].transform.position.z);
                 tiles[index].occupiedBlack = true;
                 blackTiles.Add(tiles[index]);
             }

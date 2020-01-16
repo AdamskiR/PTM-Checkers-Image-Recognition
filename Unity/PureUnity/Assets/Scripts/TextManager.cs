@@ -46,6 +46,19 @@ public class TextManager : MonoBehaviour
         statusText.text = status;
     }
 
+    public void UpdateText(int turn, bool white, bool play, string status)
+    {
+        turnText.text = "Turn: " + turn.ToString();
+
+        if (white) playerText.text = "Player: White";
+        else playerText.text = "Player: Black";
+
+        if (play) playStopText.text = "Stop";
+        else playStopText.text = "Play";
+
+        statusText.text = status;
+    }
+
     public void UpdateCheckersNumber(int white, int black)
     {
         whiteNumber.text = "White: " + white.ToString();

@@ -992,7 +992,7 @@ public class BoardDetector : MonoBehaviour
                     neighbours[0] = new NeighbourTilesDetails(FindTile("E7"));
                     neighbours[1] = new NeighbourTilesDetails(FindTile("G7"));
                     whiteNeighbours[0] = new NeighbourTilesDetails(FindTile("G7"));
-                    blackNeighbours[0] = new NeighbourTilesDetails(FindTile("H8"));
+                    blackNeighbours[0] = new NeighbourTilesDetails(FindTile("E7"));
 
                     t.neighborTiles = neighbours;
                     t.neighborWhiteTiles = whiteNeighbours;

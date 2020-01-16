@@ -143,7 +143,6 @@ public class ReadColorGreeninHSV : MonoBehaviour
                             ListOfAllGroups.list[index].list.Add(new Vector2Int(x, y));
                             mapa[x, y] = nextgroup;
                             nextgroup++;
-                            Debug.Log("nowa grupa");
                         }
                     }
                 }
