@@ -47,10 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imagePath: /CameraPictures/CameraInput.png
-  HvalueMin: 0
-  HvalueMax: 0.3
-  Svalue: 0.6
-  Vvalue: 0.6
+  HvalueMin: 0.8
+  HvalueMax: 1
+  Svalue: 0.8
+  Vvalue: 0.7
   ObjectsDetectionRange: 12
   middlePoints: []
   ListOfAllGroups:
@@ -68,11 +68,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imagePath: /CameraPictures/CameraInput.png
-  HvalueMin: 0.1
-  HvalueMax: 0.3
+  HvalueMin: 0.18
+  HvalueMax: 0.2
   Svalue: 0.95
   VvalueMin: 0
-  VvalueMax: 0.4
+  VvalueMax: 0.2
   ObjectsDetectionRange: 20
   middlePoints: []
   ListOfAllGroups:
@@ -111,9 +111,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imagePath: /CameraPictures/CameraInput.png
-  HvalueMin: 0.2
+  HvalueMin: 0.1
   HvalueMax: 0.5
-  Svalue: 0.7
+  Svalue: 0.8
   Vvalue: 0.6
   ObjectsDetectionRange: 50
   middlePoints: []
