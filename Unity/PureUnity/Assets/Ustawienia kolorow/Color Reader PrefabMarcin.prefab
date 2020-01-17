@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3872594158911209163}
+  - component: {fileID: 5109774896474113822}
   - component: {fileID: 3872594158911209157}
   - component: {fileID: 3872594158911209159}
   - component: {fileID: 3872594158911209156}
@@ -34,6 +35,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5109774896474113822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3872594158911209160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb6f3f1f153b7d4cb1a49ef77499024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imagePath: /CameraPictures/CameraInput.png
+  HvalueMin: 0.4
+  HvalueMax: 0.4
+  Svalue: 0.2
+  VvalueMin: 0.2
+  VvalueMax: 0.2
+  ObjectsDetectionRange: 20
+  middlePoints: []
+  ListOfAllGroups:
+    list: []
 --- !u!114 &3872594158911209157
 MonoBehaviour:
   m_ObjectHideFlags: 0

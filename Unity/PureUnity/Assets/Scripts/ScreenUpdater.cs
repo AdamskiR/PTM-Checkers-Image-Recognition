@@ -11,7 +11,7 @@ public class ScreenUpdater : MonoBehaviour
    // ReadColorRedinHSV red;
     ReadColorWhiteinHSV white;
     ReadColorBlackinHSV black;
-   // ReadColorGreeninHSV green; 
+    ReadColorYellowinHSV yellow; 
 
     Simple2DVisualizer visual;
 
@@ -25,7 +25,7 @@ public class ScreenUpdater : MonoBehaviour
         //red = FindObjectOfType<ReadColorRedinHSV>();
         white = FindObjectOfType<ReadColorWhiteinHSV>();
         black = FindObjectOfType<ReadColorBlackinHSV>();
-       // green = FindObjectOfType<ReadColorGreeninHSV>();
+        yellow = FindObjectOfType<ReadColorYellowinHSV>();
     }
 
     void Update()
@@ -44,7 +44,7 @@ public class ScreenUpdater : MonoBehaviour
         //red.ReadColors();
         white.ReadColors();
         black.ReadColors();
-        //green.ReadColors();
+        yellow.ReadColors();
 
         visual.ShowGame();
         yield return new WaitForSeconds(captureRate);

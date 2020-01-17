@@ -9,13 +9,18 @@ public class CheckersDetection : MonoBehaviour
     [Header("Data")]
     public Vector3[] whiteCheckers;
     public Vector3[] blackCheckers;
-    [SerializeField] TilesDetails[] tiles;
+    public Vector3[] kings;
+
     public List<TilesDetails> whiteTiles;
     public List<TilesDetails> blackTiles;
+    public List<TilesDetails> kingsTiles;
+    [SerializeField] TilesDetails[] tiles;
 
     [Header("3D Objects")]
     [SerializeField] GameObject[] whiteRepresentation3D = new GameObject[20];
     [SerializeField] GameObject[] blackRepresentation3D = new GameObject[20];
+    [SerializeField] GameObject[] blackKingsRepresentation3D = new GameObject[12];
+    [SerializeField] GameObject[] whiteKingsRepresentation3D = new GameObject[12];
     [SerializeField] GameObject[] TileRepresentation3D;
 
 
@@ -24,6 +29,7 @@ public class CheckersDetection : MonoBehaviour
 
     private int whiteCheckerNumber;
     private int blackCheckerNumber;
+    private int kingsNumber;
 
     public void CalculateTiles()
     {
@@ -33,6 +39,7 @@ public class CheckersDetection : MonoBehaviour
 
         whiteCheckers = new Vector3[whiteCheckerNumber];
         blackCheckers = new Vector3[blackCheckerNumber];
+        kings = new Vector3[kingsNumber];
         HideAll3DChecker();
 
        // try
@@ -40,7 +47,7 @@ public class CheckersDetection : MonoBehaviour
             GetObjectsData();
             ClearTilesOccupation();
             PutCheckersOnTiles();
-            FindObjectOfType<TimeMaster>().CheckMovement();
+            FindObjectOfType<GameMaster>().CheckMovement();
 
         }
        // catch (Exception e)
@@ -64,7 +71,7 @@ public class CheckersDetection : MonoBehaviour
             {
                 tiles[i].occupiedBlack = false;
                 tiles[i].occupiedWhite = false;
-            }
+                tiles[i].king = false;            }
         }
         catch (Exception e)
         {
@@ -78,6 +85,7 @@ public class CheckersDetection : MonoBehaviour
         { 
         whiteTiles.Clear();
         blackTiles.Clear();
+        kingsTiles.Clear();
         TileRepresentation3D = FindObjectOfType<BoardDetector>().AllTileRepresentation3D();
         for (int i = 0; i < whiteCheckers.Length; i++)
         {
@@ -125,7 +133,45 @@ public class CheckersDetection : MonoBehaviour
             }
 
         }
-    }
+
+            for (int i = 0; i < kings.Length; i++)
+            {
+                int index = -1;
+                float minDistance = 500;
+                for (int j = 0; j < tiles.Length; j++)
+                {
+                    float distanceTileChecker = Vector3.Distance(kings[i], tiles[j].tilePosition);
+                    if (Math.Abs(distanceTileChecker) < minDistance && Math.Abs(distanceTileChecker) < errorMargin)
+                    {
+                        minDistance = Math.Abs(distanceTileChecker);
+                        index = j;
+                    }
+
+                }
+                if (index > -1)
+                {
+                    
+                    if (tiles[index].occupiedWhite)
+                    {
+                        kingsTiles.Add(tiles[index]);
+                        tiles[index].king = true;
+                        whiteKingsRepresentation3D[i].transform.position = new Vector3(TileRepresentation3D[index].transform.position.x,
+                        TileRepresentation3D[index].transform.position.y + 20, TileRepresentation3D[index].transform.position.z);
+                    }
+
+                    if (tiles[index].occupiedBlack)
+                    {
+                        kingsTiles.Add(tiles[index]);
+                        tiles[index].king = true;
+                        blackKingsRepresentation3D[i].transform.position = new Vector3(TileRepresentation3D[index].transform.position.x,
+                        TileRepresentation3D[index].transform.position.y + 20, TileRepresentation3D[index].transform.position.z);
+                    }
+
+                }
+
+            }
+
+        }
         catch (Exception e)
         {
             Debug.Log("Problem ze spawnowaniem pionkow");
@@ -147,6 +193,12 @@ public class CheckersDetection : MonoBehaviour
             {
                 blackCheckers[i] = new Vector3(FindObjectOfType<ReadColorBlackinHSV>().middlePoints[i].x, FindObjectOfType<ReadColorBlackinHSV>().middlePoints[i].y, 1);
             }
+
+            for (int i = 0; i < kingsNumber; i++)
+            {
+                kings[i] = new Vector3(FindObjectOfType<ReadColorYellowinHSV>().middlePoints[i].x, FindObjectOfType<ReadColorYellowinHSV>().middlePoints[i].y, 1);
+            }
+
         }
         catch (Exception e)
         {
@@ -166,6 +218,16 @@ public class CheckersDetection : MonoBehaviour
             blackRepresentation3D[i].transform.position = new Vector3(0, -120, 0);
         }
 
+        for (int i = 0; i < blackKingsRepresentation3D.Length; i++)
+        {
+            blackKingsRepresentation3D[i].transform.position = new Vector3(0, -120, 0);
+        }
+
+        for (int i = 0; i < whiteKingsRepresentation3D.Length; i++)
+        {
+            whiteKingsRepresentation3D[i].transform.position = new Vector3(0, -120, 0);
+        }
+
     }
 
     private void SetNumberOfObjects()
@@ -175,6 +237,9 @@ public class CheckersDetection : MonoBehaviour
 
         blackCheckerNumber = FindObjectOfType<ReadColorBlackinHSV>().middlePoints.Count;
         if (blackCheckerNumber > 16) blackCheckerNumber = 16;
+
+        kingsNumber = FindObjectOfType<ReadColorYellowinHSV>().middlePoints.Count;
+        if (kingsNumber > 16) kingsNumber = 16;
     }
 
 

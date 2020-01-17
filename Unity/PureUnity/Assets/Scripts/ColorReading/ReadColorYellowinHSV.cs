@@ -3,14 +3,17 @@ using UnityEngine;
 using System.IO;
 using System;
 
-public class ReadColorRed : MonoBehaviour
+public class ReadColorYellowinHSV : MonoBehaviour
 {
     [SerializeField] string imagePath = "/CameraPictures/CameraInput.png";
 
     [Header("RGB Colors")]
-    [SerializeField] [Range(0, 1)] float Rvalue = 0.6f;
-    [SerializeField] [Range(0, 1)] float Gvalue = 0.3f;
-    [SerializeField] [Range(0, 1)] float Bvalue = 0.3f;
+    [SerializeField] [Range(0, 1)] float HvalueMin = 0.4f;
+    [SerializeField] [Range(0, 1)] float HvalueMax = 0.4f;
+    [SerializeField] [Range(0, 1)] float SvalueMin = 0.2f;
+    [SerializeField] [Range(0, 1)] float SvalueMax = 0.3f;
+    [SerializeField] [Range(0, 1)] float VvalueMin = 0.2f;
+    [SerializeField] [Range(0, 1)] float VvalueMax = 0.2f;
 
     [Header("Picture details")]
     [SerializeField][Range(0,100)] int ObjectsDetectionRange = 20;
@@ -62,11 +65,11 @@ public class ReadColorRed : MonoBehaviour
                 for (int y = 0; y < newTex.height; y++)
                 {
 
-                    float r = image.GetPixel(x, y).r;
-                    float g = image.GetPixel(x, y).g;
-                    float b = image.GetPixel(x, y).b;
+                    var rgb = image.GetPixel(x, y);
+                    float H, S, V;
+                    Color.RGBToHSV(rgb, out H, out S, out V);
 
-                    if (r > Rvalue && g < Gvalue && b < Bvalue)
+                    if (H > HvalueMin && H < HvalueMax && S < SvalueMax && S> SvalueMin && V > VvalueMin && V < VvalueMax )
                     {
                         mapa[x, y] = 1;
                         //Color rgb = Color.black;
@@ -83,7 +86,8 @@ public class ReadColorRed : MonoBehaviour
             //newTex.Apply();
 
             //var Bytes = newTex.EncodeToPNG();
-            //File.WriteAllBytes(Application.dataPath + "/CameraPictures/CameraInputMapRed.png", Bytes);
+            //Destroy(newTex);
+            //File.WriteAllBytes(Application.dataPath + "/CameraPictures/CameraInputMapBlack.png", Bytes);
 
 
             #region(Grupowanie pixeli)
@@ -142,7 +146,7 @@ public class ReadColorRed : MonoBehaviour
                             ListOfAllGroups.list[index].list.Add(new Vector2Int(x, y));
                             mapa[x, y] = nextgroup;
                             nextgroup++;
-                            Debug.Log("nowa grupa");
+                           // Debug.Log("nowa grupa");
                         }
                     }
                 }

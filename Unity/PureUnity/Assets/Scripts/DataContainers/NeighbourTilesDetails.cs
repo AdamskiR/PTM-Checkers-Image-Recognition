@@ -7,6 +7,7 @@ public class NeighbourTilesDetails
     public GameObject TileRepresentation3D;
     public bool occupiedWhite = false;
     public bool occupiedBlack = false;
+    public bool king = false;
     public TilesDetails []captureTiles;
 
 

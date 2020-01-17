@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimeMaster : MonoBehaviour
+public class GameMaster : MonoBehaviour
 {
     [Header("time")]
     [SerializeField] int turn = 0;
@@ -14,8 +14,10 @@ public class TimeMaster : MonoBehaviour
     [Header("checkers position")]
     [SerializeField] List<TilesDetails> previousWhiteTiles;
     [SerializeField] List<TilesDetails> previousBlackTiles;
+    [SerializeField] List<TilesDetails> previousKings;
     [SerializeField] List<TilesDetails> currentWhiteTiles;
     [SerializeField] List<TilesDetails> currentBlackTiles;
+    [SerializeField] List<TilesDetails> currentKings;
     [SerializeField] string mandatoryTile = "";
 
     [SerializeField] Canvas whiteWin;
@@ -237,6 +239,7 @@ public class TimeMaster : MonoBehaviour
     {
         currentBlackTiles = new List<TilesDetails>(FindObjectOfType<CheckersDetection>().blackTiles);
         currentWhiteTiles = new List<TilesDetails>(FindObjectOfType<CheckersDetection>().whiteTiles);
+        currentKings = new List<TilesDetails>(FindObjectOfType<CheckersDetection>().kingsTiles);
     }
     private void EndTurn()
     {
@@ -251,15 +254,16 @@ public class TimeMaster : MonoBehaviour
         else
         {
             whiteTurn = false;
-            FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play,"Wykonano ruch");
+            FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "Wykonano ruch");
             FindObjectOfType<TextManager>().UpdateCheckersNumber(previousWhiteTiles.Count, previousBlackTiles.Count);
 
         }
     }
-    private void MakePrevoiusListCurrent(List<TilesDetails> checkersW, List<TilesDetails> checkersB)
+    private void MakePrevoiusListCurrent(List<TilesDetails> checkersW, List<TilesDetails> checkersB, List<TilesDetails> kings)
     {
         previousBlackTiles.Clear();
         previousWhiteTiles.Clear();
+        previousKings.Clear();
         for (int i = 0; i < checkersW.Count; i++)
             previousWhiteTiles.Add(new TilesDetails
             {
@@ -290,6 +294,23 @@ public class TimeMaster : MonoBehaviour
                 neighborBlackTiles = checkersB[i].neighborBlackTiles,
                 captureTiles = checkersB[i].captureTiles
             });
+
+        for (int i = 0; i < kings.Count; i++)
+            previousKings.Add(new TilesDetails
+            {
+                tileName = kings[i].tileName,
+                TileRepresentation3D = kings[i].TileRepresentation3D,
+                tilePosition = kings[i].tilePosition,
+                distanceToMarker = kings[i].distanceToMarker,
+                occupiedBlack = kings[i].occupiedBlack,
+                occupiedWhite = kings[i].occupiedWhite,
+                king = kings[i].king,
+                neighborTiles = kings[i].neighborTiles,
+                neighborWhiteTiles = kings[i].neighborWhiteTiles,
+                neighborBlackTiles = kings[i].neighborBlackTiles,
+                captureTiles = kings[i].captureTiles
+            });
+
     }
 
 
@@ -315,13 +336,24 @@ public class TimeMaster : MonoBehaviour
 
     }
 
+    private bool LegalMoveKing(TilesDetails previousTile, TilesDetails newTile)
+    {
+        foreach (var pt in previousTile.neighborTiles)
+        {
+            if (pt.tileName == newTile.tileName) return true;
+        }
+        return false;
+
+
+    }
+
     private bool IsCapturePosible()
     {
         if (whiteTurn)
         {
             foreach (var t in previousWhiteTiles)
             {
-                Debug.Log("Pionek: " + t.tileName +" " +FurtherCapturePossible(t));
+                Debug.Log("Pionek: " + t.tileName + " " + FurtherCapturePossible(t));
                 if (FurtherCapturePossible(t)) return true;
             }
             return false;
@@ -369,25 +401,25 @@ public class TimeMaster : MonoBehaviour
                             //Debug.Log("Bicie: " + t.tileName + " sasiad " + nt.tileName);
                             if (whiteTurn)
                             {
-                                foreach(var previousB in previousBlackTiles)
-                                if (nt.tileName == previousB.tileName)
-                                {
-                                    Debug.Log("Bij dalej na pole: " + pt.tileName);
-                                    return true;
-                                }
+                                foreach (var previousB in previousBlackTiles)
+                                    if (nt.tileName == previousB.tileName)
+                                    {
+                                        Debug.Log("Bij dalej na pole: " + pt.tileName);
+                                        return true;
+                                    }
                             }
                             else
                             {
-                                    foreach (var previousW in previousWhiteTiles)
+                                foreach (var previousW in previousWhiteTiles)
+                                {
+                                    // Debug.Log("white: " + previousW.tileName + " nt " + nt.tileName);
+                                    if (nt.tileName == previousW.tileName)
                                     {
-                                       // Debug.Log("white: " + previousW.tileName + " nt " + nt.tileName);
-                                        if (nt.tileName == previousW.tileName)
-                                        {
-                                            Debug.Log("Bij dalej na pole: " + pt.tileName);
-                                            return true;
-                                        }
+                                        Debug.Log("Bij dalej na pole: " + pt.tileName);
+                                        return true;
                                     }
-                                
+                                }
+
                             }
                         }
                     }
@@ -548,7 +580,7 @@ public class TimeMaster : MonoBehaviour
         return false;
     }
 
-    private bool LegalMoveKing(TilesDetails previousTile, TilesDetails newTile)
+    private bool LegalMoveKingAbandon(TilesDetails previousTile, TilesDetails newTile)
     {
         if (whiteTurn)
         {
@@ -619,7 +651,7 @@ public class TimeMaster : MonoBehaviour
         //TODO add animation here
     }
 
-    private void EndReach(TilesDetails t)
+    private void EndReached(TilesDetails t)
     {
         switch (t.tileName)
         {
@@ -718,7 +750,7 @@ public class TimeMaster : MonoBehaviour
         if (whiteTurn) { move = "Move: W " + PreviousTile().tileName + " -> " + NewTile().tileName; }
         else { move = "Move: B " + PreviousTile().tileName + " -> " + NewTile().tileName; }
         //FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move, "Bij dalej z: " + t.tileName + " na: " + FurtherCaptureEnd(t).tileName);
-        MakePrevoiusListCurrent(currentWhiteTiles, currentBlackTiles);
+        MakePrevoiusListCurrent(currentWhiteTiles, currentBlackTiles, currentKings);
         blackChecker = previousBlackTiles.Count;
         whiteChecker = previousWhiteTiles.Count;
     }
@@ -773,6 +805,7 @@ public class TimeMaster : MonoBehaviour
                                     else
                                     {
                                         Debug.Log("Koncze ture");
+                                        EndReached(FindTile(mandatoryTile));
                                         EndTurn();
                                     }
                                 }
@@ -789,6 +822,7 @@ public class TimeMaster : MonoBehaviour
                                         else
                                         {
                                             Debug.Log("Koncze ture");
+                                            EndReached(FindTile(mandatoryTile));
                                             EndTurn();
                                         }
                                     }
@@ -805,11 +839,22 @@ public class TimeMaster : MonoBehaviour
                         if (LegalMoveChecker(PreviousTile(), NewTile()) && BlackNumberSame())
                         {
                             Debug.Log("Wykryto poprawny ruch pionkiem");
+                            EndReached(NewTile());
                             AckCaptureAndContinue(NewTile());
                             EndTurn();
                         }
                         else
                         {
+                            if (PreviousTile().king)
+                            {
+                                if (LegalMoveKing(PreviousTile(), NewTile()) && BlackNumberSame())
+                                {
+                                    Debug.Log("Wykryto poprawny ruch królem");
+                                    EndReached(NewTile());
+                                    AckCaptureAndContinue(NewTile());
+                                    EndTurn();
+                                }
+                            }
                             Debug.Log("Wykonaj ruch pionkiem białym");
                         }
                     }
@@ -818,7 +863,7 @@ public class TimeMaster : MonoBehaviour
                 {
                     Debug.Log("Oczekuje na ruch pionkiem białym");
                 }
-                
+
             }
             else
             {
@@ -843,6 +888,7 @@ public class TimeMaster : MonoBehaviour
                                     else
                                     {
                                         Debug.Log("Koncze ture");
+                                        EndReached(FindTile(mandatoryTile));
                                         EndTurn();
                                     }
                                 }
@@ -859,6 +905,7 @@ public class TimeMaster : MonoBehaviour
                                         else
                                         {
                                             Debug.Log("Koncze ture");
+                                            EndReached(FindTile(mandatoryTile));
                                             EndTurn();
                                         }
                                     }
@@ -875,11 +922,22 @@ public class TimeMaster : MonoBehaviour
                         if (LegalMoveChecker(PreviousTile(), NewTile()) && WhiteNumberSame())
                         {
                             Debug.Log("Wykryto poprawny ruch pionkiem");
+                            EndReached(NewTile());
                             AckCaptureAndContinue(NewTile());
                             EndTurn();
                         }
                         else
                         {
+                            if (PreviousTile().king)
+                            {
+                                if (LegalMoveKing(PreviousTile(), NewTile()) && WhiteNumberSame())
+                                {
+                                    Debug.Log("Wykryto poprawny ruch królem");
+                                    EndReached(NewTile());
+                                    AckCaptureAndContinue(NewTile());
+                                    EndTurn();
+                                }
+                            }
                             Debug.Log("Wykonaj ruch pionkiem czarnym");
                         }
                     }
@@ -888,9 +946,9 @@ public class TimeMaster : MonoBehaviour
                 {
                     Debug.Log("Oczekuje na ruch pionkiem czarnym");
                 }
-                
+
             }
-            
+
 
         }
     }
