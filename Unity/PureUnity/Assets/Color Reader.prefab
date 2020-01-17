@@ -58,6 +58,13 @@ MonoBehaviour:
   middlePoints: []
   ListOfAllGroups:
     list: []
+  sliderHvalueMin: {fileID: 0}
+  sliderHvalueMax: {fileID: 0}
+  sliderSvalueMin: {fileID: 0}
+  sliderSvalueMax: {fileID: 0}
+  sliderVvalueMin: {fileID: 0}
+  sliderVvalueMax: {fileID: 0}
+  sliderRange: {fileID: 0}
 --- !u!114 &7739330291851607220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,6 +86,11 @@ MonoBehaviour:
   middlePoints: []
   ListOfAllGroups:
     list: []
+  sliderHvalueMin: {fileID: 0}
+  sliderHvalueMax: {fileID: 0}
+  sliderSvalue: {fileID: 0}
+  sliderVvalue: {fileID: 0}
+  sliderRange: {fileID: 0}
 --- !u!114 &7739330291851607222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +113,12 @@ MonoBehaviour:
   middlePoints: []
   ListOfAllGroups:
     list: []
+  sliderHvalueMin: {fileID: 0}
+  sliderHvalueMax: {fileID: 0}
+  sliderSvalue: {fileID: 0}
+  sliderVvalueMin: {fileID: 0}
+  sliderVvalueMax: {fileID: 0}
+  sliderRange: {fileID: 0}
 --- !u!114 &7739330291851607221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,6 +140,11 @@ MonoBehaviour:
   middlePoints: []
   ListOfAllGroups:
     list: []
+  sliderHvalueMin: {fileID: 0}
+  sliderHvalueMax: {fileID: 0}
+  sliderSvalue: {fileID: 0}
+  sliderVvalue: {fileID: 0}
+  sliderRange: {fileID: 0}
 --- !u!114 &7739330291851607227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,3 +166,8 @@ MonoBehaviour:
   middlePoints: []
   ListOfAllGroups:
     list: []
+  sliderHvalueMin: {fileID: 0}
+  sliderHvalueMax: {fileID: 0}
+  sliderSvalue: {fileID: 0}
+  sliderVvalue: {fileID: 0}
+  sliderRange: {fileID: 0}

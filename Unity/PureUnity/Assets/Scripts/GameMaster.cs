@@ -234,6 +234,10 @@ public class GameMaster : MonoBehaviour
     }
     #endregion
 
+    public bool IsGameOn()
+    {
+        return play;
+    }
 
     private void CheckCurrentCheckersLocation()
     {
@@ -757,7 +761,7 @@ public class GameMaster : MonoBehaviour
 
     private void EndGame()
     {
-        if (whiteKing + whiteChecker < 1)
+        if (whiteKing + whiteChecker < 1 && blackKing + blackChecker > 0)
         {
             blackWin.enabled = true;
         }
@@ -766,7 +770,7 @@ public class GameMaster : MonoBehaviour
             blackWin.enabled = false;
         }
 
-        if (blackKing + blackChecker < 1)
+        if (blackKing + blackChecker < 1 && whiteKing + whiteChecker>0)
         {
             whiteWin.enabled = true;
         }
@@ -971,6 +975,8 @@ public class GameMaster : MonoBehaviour
             previousWhiteTiles.Clear();
             currentBlackTiles.Clear();
             currentWhiteTiles.Clear();
+            whiteWin.enabled = false;
+            blackWin.enabled = false;
             FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "white first", "Gra zatrzymana");
         }
         else

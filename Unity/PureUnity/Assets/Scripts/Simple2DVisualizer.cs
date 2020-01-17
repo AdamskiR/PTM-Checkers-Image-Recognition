@@ -37,8 +37,36 @@ public class Simple2DVisualizer : MonoBehaviour
         {
             Debug.Log("Nie wykryto pionkow/pol");
         }
+        //FindObjectOfType<CheckersDetection>().CalculateTiles();
+    }
+
+    public void ShowCheckers()
+    {
+     
+
+        int whiteCheckerNumber = FindObjectOfType<ReadColorWhiteinHSV>().middlePoints.Count;
+        if (whiteCheckerNumber > 16) whiteCheckerNumber = 16;
+
+        int blackCheckerNumber = FindObjectOfType<ReadColorBlackinHSV>().middlePoints.Count;
+        if (blackCheckerNumber > 16) blackCheckerNumber = 16;
+
+        int yellowCheckerNumber = FindObjectOfType<ReadColorYellowinHSV>().middlePoints.Count;
+        if (yellowCheckerNumber > 16) yellowCheckerNumber = 16;
+
+        try
+        {
+            CleanScrean();
+            FillScrean(whiteCheckerNumber, blackCheckerNumber,yellowCheckerNumber);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Nie wykryto pionkow");
+        }
         FindObjectOfType<CheckersDetection>().CalculateTiles();
     }
+
+
+
 
     public void ShowTiles()
     {
@@ -110,6 +138,25 @@ public class Simple2DVisualizer : MonoBehaviour
         for (int i = 0; i < greenCheckerNumber; i++)
         {
             marker[i].transform.position = new Vector3(transform.position.x - FindObjectOfType<ReadColorGreeninHSV>().middlePoints[i].x / 1.2f + 200, transform.position.y - FindObjectOfType<ReadColorGreeninHSV>().middlePoints[i].y / 1.2f + 200, 1);
+        }
+    }
+
+    private void FillScrean(int whiteCheckerNumber, int blackCheckerNumber, int yellowCheckerNumber)
+    {
+
+        for (int i = 0; i < whiteCheckerNumber; i++)
+        {
+            whiteCheckers[i].transform.position = new Vector3(transform.position.x - FindObjectOfType<ReadColorWhiteinHSV>().middlePoints[i].x / 1.2f + 200, transform.position.y - FindObjectOfType<ReadColorWhiteinHSV>().middlePoints[i].y / 1.2f + 200, 1);
+        }
+
+        for (int i = 0; i < blackCheckerNumber; i++)
+        {
+            blackCheckers[i].transform.position = new Vector3(transform.position.x - FindObjectOfType<ReadColorBlackinHSV>().middlePoints[i].x / 1.2f + 200, transform.position.y - FindObjectOfType<ReadColorBlackinHSV>().middlePoints[i].y / 1.2f + 200, 1);
+        }
+
+        for (int i = 0; i < yellowCheckerNumber; i++)
+        {
+            kings[i].transform.position = new Vector3(transform.position.x - FindObjectOfType<ReadColorYellowinHSV>().middlePoints[i].x / 1.2f + 200, transform.position.y - FindObjectOfType<ReadColorYellowinHSV>().middlePoints[i].y / 1.2f + 200, 1);
         }
     }
 

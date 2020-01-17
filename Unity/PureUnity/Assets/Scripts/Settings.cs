@@ -10,10 +10,9 @@ public class Settings : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+   public void Test()
     {
-        
+        FindObjectOfType<ScreenUpdater>().ReadCamera();
     }
 
     public void EnableSettingsCanvas()

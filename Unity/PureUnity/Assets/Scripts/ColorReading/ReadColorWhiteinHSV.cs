@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.IO;
 using System;
+using UnityEngine.UI;
 
 public class ReadColorWhiteinHSV : MonoBehaviour
 {
@@ -14,14 +15,28 @@ public class ReadColorWhiteinHSV : MonoBehaviour
     [SerializeField] [Range(0, 1)] float Vvalue = 0.8f;
 
     [Header("Picture details")]
-    [SerializeField][Range(0,100)] int ObjectsDetectionRange = 20;
+    [SerializeField][Range(0,100)] float ObjectsDetectionRange = 20;
     public List<Vector2> middlePoints;
     public AllGroups ListOfAllGroups = new AllGroups();
 
     public int[,] mapa;
     int mapaX = 1380, mapaY = 820;
     int nextgroup = 2;
-   
+
+    public Slider sliderHvalueMin;
+    public Slider sliderHvalueMax;
+    public Slider sliderSvalue;
+    public Slider sliderVvalue;
+    public Slider sliderRange;
+
+    public void SubmitSliderSetting()
+    {
+        HvalueMax = sliderHvalueMax.value;
+        HvalueMin = sliderHvalueMin.value;
+        Svalue = sliderSvalue.value;
+        Vvalue = sliderVvalue.value;
+        ObjectsDetectionRange = sliderRange.value;
+    }
 
     void Start()
     {

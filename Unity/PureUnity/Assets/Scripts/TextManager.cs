@@ -2,24 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TextManager : MonoBehaviour
 {
-    /* NIE USUWAC
+    
     [SerializeField] TextMeshProUGUI turnText;
     [SerializeField] TextMeshProUGUI playerText;
     [SerializeField] TextMeshProUGUI playStopText;
     [SerializeField] TextMeshProUGUI whiteNumber;
     [SerializeField] TextMeshProUGUI blackNumber;
-    */
-
-    [SerializeField] Text turnText;
-    [SerializeField] Text playerText;
-    [SerializeField] Text playStopText;
-    [SerializeField] Text whiteNumber;
-    [SerializeField] Text blackNumber;
-    [SerializeField] Text moveText;
-    [SerializeField] Text statusText;
+    [SerializeField] TextMeshProUGUI moveText;
+    [SerializeField] TextMeshProUGUI statusText;
 
     void Start()
     {
@@ -31,7 +25,6 @@ public class TextManager : MonoBehaviour
         moveText.text = "White first";
     }
 
-    // Update is called once per frame
     public void UpdateText(int turn, bool white, bool play, string move, string status)
     {
         turnText.text = "Turn: " + turn.ToString();
