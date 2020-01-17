@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 641d047f46e9fc84290e0e771e8c9146
+  - enabled: 1
+    path: Assets/Scenes/WarcabyTMP.unity
+    guid: 702d9ef560b6ad34480c77ec1c7cf9d7
   m_configObjects: {}

@@ -1,0 +1,145 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7739330291851607225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7739330291851607226}
+  - component: {fileID: 1742955770881230191}
+  - component: {fileID: 7739330291851607220}
+  - component: {fileID: 7739330291851607222}
+  - component: {fileID: 7739330291851607221}
+  - component: {fileID: 7739330291851607227}
+  m_Layer: 0
+  m_Name: Color Reader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7739330291851607226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7739330291851607225}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 443.10757, y: -36.348015, z: -533.825}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1742955770881230191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7739330291851607225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb6f3f1f153b7d4cb1a49ef77499024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imagePath: /CameraPictures/CameraInput.png
+  HvalueMin: 0
+  HvalueMax: 0.2
+  SvalueMin: 0.2
+  SvalueMax: 0.3
+  VvalueMin: 0.6
+  VvalueMax: 0.8
+  ObjectsDetectionRange: 20
+  middlePoints: []
+  ListOfAllGroups:
+    list: []
+--- !u!114 &7739330291851607220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7739330291851607225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e00862841ea62544af39d6a88c816e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imagePath: /CameraPictures/CameraInput.png
+  HvalueMin: 0.8
+  HvalueMax: 1
+  Svalue: 0.8
+  Vvalue: 0.7
+  ObjectsDetectionRange: 18
+  middlePoints: []
+  ListOfAllGroups:
+    list: []
+--- !u!114 &7739330291851607222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7739330291851607225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d820a3d6ae91f45b7eb74295e0a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imagePath: /CameraPictures/CameraInput.png
+  HvalueMin: 0.1
+  HvalueMax: 0.2
+  Svalue: 0.95
+  VvalueMin: 0
+  VvalueMax: 0.07
+  ObjectsDetectionRange: 20
+  middlePoints: []
+  ListOfAllGroups:
+    list: []
+--- !u!114 &7739330291851607221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7739330291851607225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8972c0756a86cf94ca22d23d8179b164, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imagePath: /CameraPictures/CameraInput.png
+  HvalueMin: 0.1
+  HvalueMax: 0.2
+  Svalue: 0.8
+  Vvalue: 0.8
+  ObjectsDetectionRange: 20
+  middlePoints: []
+  ListOfAllGroups:
+    list: []
+--- !u!114 &7739330291851607227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7739330291851607225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41317e6d79aec6142bc1ce32d2eb4586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imagePath: /CameraPictures/CameraInput.png
+  HvalueMin: 0.1
+  HvalueMax: 0.5
+  Svalue: 0.8
+  Vvalue: 0.6
+  ObjectsDetectionRange: 50
+  middlePoints: []
+  ListOfAllGroups:
+    list: []
