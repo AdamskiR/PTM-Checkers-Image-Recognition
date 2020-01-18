@@ -919,11 +919,12 @@ public class GameMaster : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Oczekuje na ruch pionkiem białym");
+                    Debug.Log("Oczekuje na ruch pionkiem bialym");
                     string stat = "Move one white checker";
                     FindObjectOfType<TextManager>().UpdateText(stat);
                     return false;
                 }
+                
 
             }
             else

@@ -1466,7 +1466,7 @@ GameObject:
   - component: {fileID: 81827676}
   - component: {fileID: 81827677}
   m_Layer: 0
-  m_Name: BoardTracker
+  m_Name: CheckersTracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43488,7 +43488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: B8
+  tileName: H2
 --- !u!65 &8914891907896095597
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44257,7 +44257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: E7
+  tileName: G5
 --- !u!65 &8914891908108735795
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44283,7 +44283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: D6
+  tileName: F4
 --- !u!65 &8914891908116936745
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44635,7 +44635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: C1
+  tileName: A3
 --- !u!65 &8914891908204360819
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44740,7 +44740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: B6
+  tileName: F2
 --- !u!65 &8914891908210496947
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44920,7 +44920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: F4
+  tileName: D6
 --- !u!65 &8914891908320934157
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45025,7 +45025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: C5
+  tileName: E3
 --- !u!65 &8914891908326232141
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45636,7 +45636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: G5
+  tileName: E7
 --- !u!65 &8914891908375721323
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45818,7 +45818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: D8
+  tileName: H4
 --- !u!65 &8914891908400306423
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46089,7 +46089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: E3
+  tileName: C5
 --- !u!65 &8914891908551948201
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46686,7 +46686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: G3
+  tileName: C7
 --- !u!65 &8914891908585038767
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -47139,7 +47139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: D2
+  tileName: B4
 --- !u!65 &8914891908676557737
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -47323,7 +47323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: H6
+  tileName: F8
 --- !u!65 &8914891908694486719
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -47615,7 +47615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: E1
+  tileName: A5
 --- !u!33 &8914891908728883702
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -48787,7 +48787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: A7
+  tileName: G1
 --- !u!65 &8914891908946945581
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49247,7 +49247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: F2
+  tileName: B6
 --- !u!33 &8914891908997838358
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -49367,7 +49367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: H4
+  tileName: D8
 --- !u!65 &8914891909003924479
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49407,7 +49407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: B4
+  tileName: D2
 --- !u!1 &8914891909041219207
 GameObject:
   m_ObjectHideFlags: 0
@@ -50170,7 +50170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: G1
+  tileName: A7
 --- !u!65 &8914891909120208505
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -50444,7 +50444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: A5
+  tileName: E1
 --- !u!65 &8914891909170547137
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52046,7 +52046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: H2
+  tileName: B8
 --- !u!65 &8914891909577861127
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52474,7 +52474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: F8
+  tileName: H6
 --- !u!23 &8914891909736229378
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -52532,7 +52532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: C7
+  tileName: G3
 --- !u!65 &8914891909736229405
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -53551,7 +53551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c17ab2db2c9dc14b8eb7aeb72f6bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: A3
+  tileName: C1
 --- !u!65 &8914891909889262105
 BoxCollider:
   m_ObjectHideFlags: 0
