@@ -239,6 +239,21 @@ public class GameMaster : MonoBehaviour
         return play;
     }
 
+    public void ToogleWhites()
+    {
+        if (whiteTurn)
+        {
+            whiteTurn = false;
+            FindObjectOfType<TextManager>().UpdateText(whiteTurn, "Black turn");
+        }
+        else
+        {
+            whiteTurn = true;
+            FindObjectOfType<TextManager>().UpdateText(whiteTurn, "White turn");
+        }
+    }
+
+
     private void CheckCurrentCheckersLocation()
     {
         currentBlackTiles = new List<TilesDetails>(FindObjectOfType<CheckersDetection>().blackTiles);
@@ -252,13 +267,11 @@ public class GameMaster : MonoBehaviour
         {
             turn++;
             whiteTurn = true;
-            FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "Wykonano ruch");
             FindObjectOfType<TextManager>().UpdateCheckersNumber(previousWhiteTiles.Count, previousBlackTiles.Count);
         }
         else
         {
             whiteTurn = false;
-            FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "Wykonano ruch");
             FindObjectOfType<TextManager>().UpdateCheckersNumber(previousWhiteTiles.Count, previousBlackTiles.Count);
 
         }
@@ -747,13 +760,10 @@ public class GameMaster : MonoBehaviour
     }
 
 
-    private void AckCaptureAndContinue(TilesDetails t)
+    private void AckCaptureAndContinue(TilesDetails t, string move)
     {
         mandatoryTile = t.tileName;
-        string move = "";
-        if (whiteTurn) { move = "Move: W " + PreviousTile().tileName + " -> " + NewTile().tileName; }
-        else { move = "Move: B " + PreviousTile().tileName + " -> " + NewTile().tileName; }
-        //FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move, "Bij dalej z: " + t.tileName + " na: " + FurtherCaptureEnd(t).tileName);
+        FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, move);
         MakePrevoiusListCurrent(currentWhiteTiles, currentBlackTiles, currentKings);
         blackChecker = previousBlackTiles.Count;
         whiteChecker = previousWhiteTiles.Count;
@@ -796,18 +806,24 @@ public class GameMaster : MonoBehaviour
                         Debug.Log("Mamy bicie");
                         if (PreviousTile() != null && NewTile() != null)
                         {
-                            if (LegalCaptureChecker(PreviousTile(), NewTile()))
+                            if (LegalCaptureChecker(PreviousTile(), NewTile()) && currentBlackTiles.Count == previousBlackTiles.Count - 1)
                             {
                                 if (mandatoryTile == "")
                                 {
                                     Debug.Log("wykonano BICIE");
-                                    AckCaptureAndContinue(NewTile());
+                                    string moves = "White: " + PreviousTile().tileName+ " -x-> " + NewTile().tileName;
+                                    string stat = "";
+                                    AckCaptureAndContinue(NewTile(), moves);
                                     if (FurtherCapturePossible(FindTile(mandatoryTile)))
                                     {
+                                        stat = "Continue capturing from tile: " + mandatoryTile;
+                                        FindObjectOfType<TextManager>().UpdateText(stat);
                                         Debug.Log("Nie koncze tury not yet");
                                     }
                                     else
                                     {
+                                        stat = "White captured enemy! turn ended";
+                                        FindObjectOfType<TextManager>().UpdateText(stat);
                                         Debug.Log("Koncze ture");
                                         EndReached(FindTile(mandatoryTile));
                                         EndTurn();
@@ -818,13 +834,19 @@ public class GameMaster : MonoBehaviour
                                     if (PreviousTile().tileName == mandatoryTile)
                                     {
                                         Debug.Log("wykonano BICIE");
-                                        AckCaptureAndContinue(NewTile());
+                                        string moves = "White: " + PreviousTile().tileName + " -x-> " + NewTile().tileName;
+                                        string stat = "";
+                                        AckCaptureAndContinue(NewTile(),moves);
                                         if (FurtherCapturePossible(FindTile(mandatoryTile)))
                                         {
+                                            stat = "Continue capturing from tile: " + mandatoryTile;
+                                            FindObjectOfType<TextManager>().UpdateText(stat);
                                             Debug.Log("Nie koncze tury not yet");
                                         }
                                         else
                                         {
+                                            stat = "White captured enemy! turn ended";
+                                            FindObjectOfType<TextManager>().UpdateText(stat);
                                             Debug.Log("Koncze ture");
                                             EndReached(FindTile(mandatoryTile));
                                             EndTurn();
@@ -835,6 +857,8 @@ public class GameMaster : MonoBehaviour
                             else
                             {
                                 Debug.Log("Musisz wykonać poprawne bicie!");
+                                string stat = "You have to capture enemy checker: ";
+                                FindObjectOfType<TextManager>().UpdateText(stat);
                             }
                         }
                     }
@@ -844,7 +868,11 @@ public class GameMaster : MonoBehaviour
                         {
                             Debug.Log("Wykryto poprawny ruch pionkiem");
                             EndReached(NewTile());
-                            AckCaptureAndContinue(NewTile());
+                            string moves = "White: " + PreviousTile().tileName + " ---> " + NewTile().tileName;
+                            string stat = "White turn ended";
+                            AckCaptureAndContinue(NewTile(),moves);
+                            FindObjectOfType<TextManager>().UpdateText(stat);
+
                             EndTurn();
                         }
                         else
@@ -855,17 +883,27 @@ public class GameMaster : MonoBehaviour
                                 {
                                     Debug.Log("Wykryto poprawny ruch królem");
                                     EndReached(NewTile());
-                                    AckCaptureAndContinue(NewTile());
+                                    string moves = "White: " + PreviousTile().tileName + " ---> " + NewTile().tileName;
+                                    string stat1 = "White turn ended";
+                                    AckCaptureAndContinue(NewTile(), moves);
+                                    FindObjectOfType<TextManager>().UpdateText(stat1);
                                     EndTurn();
                                 }
                             }
-                            Debug.Log("Wykonaj ruch pionkiem białym");
+                            else
+                            {
+                                Debug.Log("Wykonaj ruch pionkiem białym");
+                                string stat = "Move one white checker";
+                                FindObjectOfType<TextManager>().UpdateText(stat);
+                            }
                         }
                     }
                 }
                 else
                 {
                     Debug.Log("Oczekuje na ruch pionkiem białym");
+                    string stat = "Move one white checker";
+                    FindObjectOfType<TextManager>().UpdateText(stat);
                 }
 
             }
@@ -878,19 +916,25 @@ public class GameMaster : MonoBehaviour
                         if (PreviousTile() != null && NewTile() != null)
                         {
                             Debug.Log("Mamy bicie");
-                            if (LegalCaptureChecker(PreviousTile(), NewTile()))
+                            if (LegalCaptureChecker(PreviousTile(), NewTile()) && currentWhiteTiles.Count == previousWhiteTiles.Count - 1)
                             {
                                 Debug.Log("Bicie wykoane");
                                 if (mandatoryTile == "")
                                 {
                                     Debug.Log("wykonano BICIE");
-                                    AckCaptureAndContinue(NewTile());
+                                    string moves = "Black: " + PreviousTile().tileName + " -x-> " + NewTile().tileName;
+                                    string stat = "";
+                                    AckCaptureAndContinue(NewTile(), moves);
                                     if (FurtherCapturePossible(FindTile(mandatoryTile)))
                                     {
+                                        stat = "Continue capturing from tile: " + mandatoryTile;
+                                        FindObjectOfType<TextManager>().UpdateText(stat);
                                         Debug.Log("Nie koncze tury not yet");
                                     }
                                     else
                                     {
+                                        stat = "Black captured enemy! Turn ended";
+                                        FindObjectOfType<TextManager>().UpdateText(stat);
                                         Debug.Log("Koncze ture");
                                         EndReached(FindTile(mandatoryTile));
                                         EndTurn();
@@ -901,14 +945,20 @@ public class GameMaster : MonoBehaviour
                                     if (PreviousTile().tileName == mandatoryTile)
                                     {
                                         Debug.Log("wykonano BICIE");
-                                        AckCaptureAndContinue(NewTile());
+                                        string moves = "Black: " + PreviousTile().tileName + " -x-> " + NewTile().tileName;
+                                        string stat = "";
+                                        AckCaptureAndContinue(NewTile(), moves);
                                         if (FurtherCapturePossible(FindTile(mandatoryTile)))
                                         {
                                             Debug.Log("Nie koncze tury not yet");
+                                            stat = "Continue capturing from tile: " + mandatoryTile;
+                                            FindObjectOfType<TextManager>().UpdateText(stat);
                                         }
                                         else
                                         {
                                             Debug.Log("Koncze ture");
+                                            stat = "Black captured enemy! turn ended";
+                                            FindObjectOfType<TextManager>().UpdateText(stat);
                                             EndReached(FindTile(mandatoryTile));
                                             EndTurn();
                                         }
@@ -919,36 +969,51 @@ public class GameMaster : MonoBehaviour
                         else
                         {
                             Debug.Log("Musisz wykonać poprawne bicie!");
+                            string stat = "You have to capture enemy checker: ";
+                            FindObjectOfType<TextManager>().UpdateText(stat);
                         }
                     }
                     else
                     {
-                        if (LegalMoveChecker(PreviousTile(), NewTile()) && WhiteNumberSame())
+                        if (PreviousTile() != null && NewTile() != null)
                         {
-                            Debug.Log("Wykryto poprawny ruch pionkiem");
-                            EndReached(NewTile());
-                            AckCaptureAndContinue(NewTile());
-                            EndTurn();
-                        }
-                        else
-                        {
-                            if (PreviousTile().king)
+                            if (LegalMoveChecker(PreviousTile(), NewTile()) && WhiteNumberSame())
                             {
-                                if (LegalMoveKing(PreviousTile(), NewTile()) && WhiteNumberSame())
-                                {
-                                    Debug.Log("Wykryto poprawny ruch królem");
-                                    EndReached(NewTile());
-                                    AckCaptureAndContinue(NewTile());
-                                    EndTurn();
-                                }
+                                Debug.Log("Wykryto poprawny ruch pionkiem");
+                                EndReached(NewTile());
+                                string moves = "Black: " + PreviousTile().tileName + " ---> " + NewTile().tileName;
+                                string stat = "Black turn ended";
+                                AckCaptureAndContinue(NewTile(), moves);
+                                FindObjectOfType<TextManager>().UpdateText(stat);
+                                EndTurn();
                             }
-                            Debug.Log("Wykonaj ruch pionkiem czarnym");
+                            else
+                            {
+                                if (PreviousTile().king)
+                                {
+                                    if (LegalMoveKing(PreviousTile(), NewTile()) && WhiteNumberSame())
+                                    {
+                                        Debug.Log("Wykryto poprawny ruch królem");
+                                        EndReached(NewTile());
+                                        string moves = "Black: " + PreviousTile().tileName + " ---> " + NewTile().tileName;
+                                        string stat1 = "Black turn ended";
+                                        AckCaptureAndContinue(NewTile(), moves);
+                                        FindObjectOfType<TextManager>().UpdateText(stat1);
+                                        EndTurn();
+                                    }
+                                }
+                                Debug.Log("Wykonaj ruch pionkiem czarnym");
+                                string stat = "Move one black checker";
+                                FindObjectOfType<TextManager>().UpdateText(stat);
+                            }
                         }
                     }
                 }
                 else
                 {
                     Debug.Log("Oczekuje na ruch pionkiem czarnym");
+                    string stat = "Move one black checker";
+                    FindObjectOfType<TextManager>().UpdateText(stat);
                 }
 
             }
@@ -957,13 +1022,18 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    private bool BoardDetected()
+    public bool BoardDetected()
     {
         if (FindObjectOfType<BoardDetector>().AllTiles().Length == 32)
         {
+            FindObjectOfType<TextManager>().DisplayInfoAboutBoardDetection(true);
             return true;
         }
-        else return false;
+        else
+        {
+            FindObjectOfType<TextManager>().DisplayInfoAboutBoardDetection(false);
+            return false;
+        }
     }
 
     public void PlayButton()
@@ -977,7 +1047,7 @@ public class GameMaster : MonoBehaviour
             currentWhiteTiles.Clear();
             whiteWin.enabled = false;
             blackWin.enabled = false;
-            FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "white first", "Gra zatrzymana");
+            FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "---", "Game stoped");
         }
         else
         {
@@ -985,8 +1055,7 @@ public class GameMaster : MonoBehaviour
             {
                 var board = FindObjectOfType<BoardDetector>();
                 var checkers = FindObjectOfType<CheckersDetection>();
-                if (board.RightTilesNumber())
-                {
+
                     for (int i = 0; i < checkers.blackTiles.Count; i++)
                         previousBlackTiles.Add(new TilesDetails
                         {
@@ -1019,14 +1088,14 @@ public class GameMaster : MonoBehaviour
                         });
 
                     play = true;
-                    FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "white first", "Gra wystartowała");
+                    FindObjectOfType<TextManager>().UpdateText(turn, whiteTurn, play, "---", "Game started");
                     blackChecker = previousBlackTiles.Count;
                     whiteChecker = previousWhiteTiles.Count;
                 }
-            }
             else
             {
                 Debug.Log("Board not detected");
+                FindObjectOfType<TextManager>().UpdateText("Board not detected!");
             }
         }
     }

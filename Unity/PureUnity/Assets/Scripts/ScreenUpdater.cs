@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScreenUpdater : MonoBehaviour
 {
-    [SerializeField] int captureRate;
+    [SerializeField] float captureRate;
+    [SerializeField] TextMeshProUGUI FPSnumber;
 
     CameraInput photoTaker;
 
@@ -14,6 +17,11 @@ public class ScreenUpdater : MonoBehaviour
     ReadColorYellowinHSV yellow;
     ReadColorGreeninHSV green;
     Simple2DVisualizer visual;
+
+
+    public Slider sliderFPS1;
+    public Slider sliderFPS2;
+
 
     bool isReady = true;
     
@@ -26,11 +34,12 @@ public class ScreenUpdater : MonoBehaviour
         white = FindObjectOfType<ReadColorWhiteinHSV>();
         black = FindObjectOfType<ReadColorBlackinHSV>();
         yellow = FindObjectOfType<ReadColorYellowinHSV>();
+        FPSnumber.text = "0.25"; 
     }
 
     void Update()
     {
-        if (isReady && FindObjectOfType<GameMaster>().IsGameOn())
+        if (isReady && FindObjectOfType<GameMaster>().BoardDetected())
         //if (Input.GetKeyDown(KeyCode.A))
         StartCoroutine(ProcessCameraImage());
     }
@@ -48,7 +57,22 @@ public class ScreenUpdater : MonoBehaviour
         visual.ShowGame();
     }
 
-   IEnumerator ProcessCameraImage()
+
+    public void SubmitSlider1Setting()
+    {
+        captureRate = sliderFPS1.value;
+        float fps = 1f / captureRate;
+        FPSnumber.text = fps.ToString();
+    }
+
+    public void SubmitSlider2Setting()
+    {
+        captureRate = sliderFPS2.value;
+        float fps = 1f / captureRate;
+        FPSnumber.text = fps.ToString();
+    }
+
+    IEnumerator ProcessCameraImage()
     {
         isReady = false;
 

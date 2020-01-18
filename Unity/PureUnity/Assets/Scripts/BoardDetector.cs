@@ -39,6 +39,15 @@ public class BoardDetector : MonoBehaviour
             green.ReadColors();
             visual.ShowTiles();
             CalculateBoard();
+
+            if (tiles.Length == 32)
+            {
+                FindObjectOfType<TextManager>().DisplayInfoAboutBoardDetection(true);
+            }
+            else
+            {
+                FindObjectOfType<TextManager>().DisplayInfoAboutBoardDetection(false);
+            }
         }
     }
 

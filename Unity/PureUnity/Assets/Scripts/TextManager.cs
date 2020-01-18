@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
 public class TextManager : MonoBehaviour
 {
     
@@ -14,15 +15,25 @@ public class TextManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI blackNumber;
     [SerializeField] TextMeshProUGUI moveText;
     [SerializeField] TextMeshProUGUI statusText;
+    [SerializeField] TextMeshProUGUI boardDetectedtext;
 
     void Start()
     {
         turnText.text = "Turn: 0";
         playerText.text = "Player: White";
         playStopText.text = "Play";
-        whiteNumber.text = "White: calculating";
-        blackNumber.text = "Black: calculating";
-        moveText.text = "White first";
+        whiteNumber.text = "White: 0";
+        blackNumber.text = "Black: 0";
+        moveText.text = "Last move: Not make yet";
+        statusText.text = "Welcome! \nGood luck, have fun";
+    }
+
+    public void UpdateText(bool white, string move)
+    {
+        if (white) playerText.text = "Player: White";
+        else playerText.text = "Player: Black";
+
+        moveText.text = move;
     }
 
     public void UpdateText(int turn, bool white, bool play, string move, string status)
@@ -39,7 +50,12 @@ public class TextManager : MonoBehaviour
         statusText.text = status;
     }
 
-    public void UpdateText(int turn, bool white, bool play, string status)
+    public void UpdateText(string status)
+    {
+        statusText.text = status;
+    }
+
+    public void UpdateText(int turn, bool white, bool play, string move)
     {
         turnText.text = "Turn: " + turn.ToString();
 
@@ -49,13 +65,18 @@ public class TextManager : MonoBehaviour
         if (play) playStopText.text = "Stop";
         else playStopText.text = "Play";
 
-        statusText.text = status;
+        moveText.text = move;
     }
 
     public void UpdateCheckersNumber(int white, int black)
     {
         whiteNumber.text = "White: " + white.ToString();
         blackNumber.text = "Black: " + black.ToString();
+    }
+    public void DisplayInfoAboutBoardDetection(bool boardDetected)
+    {
+        if (boardDetected) boardDetectedtext.text = "Board Detected";
+        else boardDetectedtext.text = "Board NOT Detected";
     }
 
 }

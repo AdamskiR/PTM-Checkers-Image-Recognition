@@ -5,6 +5,7 @@ using UnityEngine;
 public class Settings : MonoBehaviour
 {
     [SerializeField] Canvas settings;
+
     void Start()
     {
         
@@ -14,6 +15,8 @@ public class Settings : MonoBehaviour
     {
         FindObjectOfType<ScreenUpdater>().ReadCamera();
     }
+
+    
 
     public void EnableSettingsCanvas()
     {
@@ -26,4 +29,7 @@ public class Settings : MonoBehaviour
             settings.enabled = true;
         }
     }
+
+
+
 }
