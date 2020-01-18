@@ -1,6 +1,6 @@
 Win64
 PlayerPath?
-R:/_Repo/Warcaby/Unity/build v0.2/PureUnity.exe
+R:/_Repo/Warcaby/Unity/build v0.7/PureUnity.exe
 SceneListBegin?
 Assets/Scenes/MainMenu.unity
 Assets/Scenes/WarcabyTMP.unity
@@ -121,7 +121,6 @@ ad9173d3a69d99153f38ed4b62226129 UnityEngine.Networking.dll:UnityEngine.Networki
 d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 b8a5e8091ab0b8861d2add371082c5e0 Unity.TextMeshPro.dll:TMPro.TMP_SpriteAsset
 e13cf5fdafe4ba3ad5bbdb78afe1297c Assembly-CSharp.dll:.ReadColorWhiteinHSV
-71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.KingMaker
 b3ab2106268377ffe25dd18ac23dca28 Unity.TextMeshPro.dll:TMPro.TMP_Asset
 71bb6a6b6c8f052f948db64c7dd3ca4f Unity.TextMeshPro.dll:TMPro.TMP_SpriteAnimator
 e13cf5fdafe4ba3ad5bbdb78afe1297c Assembly-CSharp.dll:.ReadColorRedinHSV
@@ -153,7 +152,7 @@ cf96e5f7b3d069bab453925bd41be04e UnityEngine.TestRunner.dll:UnityEngine.TestTool
 fb6a1ea36b4f6ef5948d283d93760765 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 5b0391b7e3d9ea9db6c0a8fbd0ca23f6 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 5b0391b7e3d9ea9db6c0a8fbd0ca23f6 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
-5639f47d5cc200950a86815a1fdfca09 Assembly-CSharp.dll:.TextManager
+293a7f10a99cbd15f14d38b92eb06b34 Assembly-CSharp.dll:.TextManager
 931f489e44eadf809e9310429c99dde5 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioListenerExtension
 fb6a1ea36b4f6ef5948d283d93760765 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 5b0391b7e3d9ea9db6c0a8fbd0ca23f6 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
@@ -165,7 +164,7 @@ d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.Spa
 099ab5bedf798cf0e7dded586af1c47d Assembly-CSharp.dll:.TileName
 e13cf5fdafe4ba3ad5bbdb78afe1297c Assembly-CSharp.dll:.ReadColorGreeninHSV
 d791aa6007fa3640be1164ea75bb087d Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
-c696e52761fb2d7769bdbb86ed18c0e1 Assembly-CSharp.dll:.ScreenUpdater
+1adc5f0b215e11676588acd0e017a3dc Assembly-CSharp.dll:.ScreenUpdater
 5372ed2ce39229b1ac910757999a8be2 Unity.TextMeshPro.dll:TMPro.TextMeshPro
 3165968ba45c74472d279ba04455fccb Unity.TextMeshPro.dll:TMPro.TMP_ColorGradient
 fa9a77a54e5fecc200929033d0a96e83 Assembly-CSharp.dll:.BoardDetector

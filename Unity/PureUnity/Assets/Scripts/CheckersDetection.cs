@@ -40,21 +40,48 @@ public class CheckersDetection : MonoBehaviour
         whiteCheckers = new Vector3[whiteCheckerNumber];
         blackCheckers = new Vector3[blackCheckerNumber];
         kings = new Vector3[kingsNumber];
-        HideAll3DChecker();
+        
 
-       // try
+        try
         {
-            GetObjectsData();
-            ClearTilesOccupation();
-            PutCheckersOnTiles();
-            FindObjectOfType<GameMaster>().CheckMovement();
+            if (FindObjectOfType<GameMaster>().CheckMovement())
+            {
+                HideAll3DChecker();
+                GetObjectsData();
+                ClearTilesOccupation();
+                PutCheckersOnTiles();
+            }
+            else
+            {
+                GetObjectsData();
+                ClearTilesOccupation();
+                DontPutCheckersOnTiles();
+            }
+            
+            
 
         }
-       // catch (Exception e)
+        catch (Exception e)
         {
-         //   Debug.Log("Niepoprawnie zczytano pozycje pionkow");
+            Debug.Log("Niepoprawnie zczytano pozycje pionkow");
         }
 
+    }
+
+    public void ThrowCheckersOnBoard()
+    {
+        try
+        {
+                HideAll3DChecker();
+                GetObjectsData();
+                ClearTilesOccupation();
+                PutCheckersOnTiles();
+            
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Niepoprawnie zczytano pozycje pionkow");
+        }
     }
 
 
@@ -78,6 +105,103 @@ public class CheckersDetection : MonoBehaviour
             Debug.Log("Problem z czyszczeniem");
         }
     }
+
+
+    private void DontPutCheckersOnTiles()
+    {
+        try
+        {
+            whiteTiles.Clear();
+            blackTiles.Clear();
+            kingsTiles.Clear();
+            TileRepresentation3D = FindObjectOfType<BoardDetector>().AllTileRepresentation3D();
+            for (int i = 0; i < whiteCheckers.Length; i++)
+            {
+                int index = -1;
+                float minDistance = 500;
+                for (int j = 0; j < tiles.Length; j++)
+                {
+                    float distanceTileChecker = Vector3.Distance(whiteCheckers[i], tiles[j].tilePosition);
+                    if (Math.Abs(distanceTileChecker) < minDistance && Math.Abs(distanceTileChecker) < errorMargin)
+                    {
+                        minDistance = Math.Abs(distanceTileChecker);
+                        index = j;
+                    }
+
+                }
+                if (index > -1)
+                {
+                    
+                    tiles[index].occupiedWhite = true;
+                    whiteTiles.Add(tiles[index]);
+                }
+            }
+
+            for (int i = 0; i < blackCheckers.Length; i++)
+            {
+                int index = -1;
+                float minDistance = 500;
+                for (int j = 0; j < tiles.Length; j++)
+                {
+                    float distanceTileChecker = Vector3.Distance(blackCheckers[i], tiles[j].tilePosition);
+                    if (Math.Abs(distanceTileChecker) < minDistance && Math.Abs(distanceTileChecker) < errorMargin)
+                    {
+                        minDistance = Math.Abs(distanceTileChecker);
+                        index = j;
+                    }
+
+                }
+                if (index > -1)
+                {
+                    
+                    tiles[index].occupiedBlack = true;
+                    blackTiles.Add(tiles[index]);
+                }
+
+            }
+
+            for (int i = 0; i < kings.Length; i++)
+            {
+                int index = -1;
+                float minDistance = 500;
+                for (int j = 0; j < tiles.Length; j++)
+                {
+                    float distanceTileChecker = Vector3.Distance(kings[i], tiles[j].tilePosition);
+                    if (Math.Abs(distanceTileChecker) < minDistance && Math.Abs(distanceTileChecker) < errorMargin)
+                    {
+                        minDistance = Math.Abs(distanceTileChecker);
+                        index = j;
+                    }
+
+                }
+                if (index > -1)
+                {
+
+                    if (tiles[index].occupiedWhite)
+                    {
+                        kingsTiles.Add(tiles[index]);
+                        tiles[index].king = true;
+                        
+                    }
+
+                    if (tiles[index].occupiedBlack)
+                    {
+                        kingsTiles.Add(tiles[index]);
+                        tiles[index].king = true;
+                    }
+
+                }
+
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Problem ze spawnowaniem pionkow");
+        }
+
+    }
+
 
     private void PutCheckersOnTiles()
     {

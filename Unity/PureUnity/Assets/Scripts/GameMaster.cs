@@ -790,7 +790,7 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    public void CheckMovement()
+    public bool CheckMovement()
     {
         if (BoardDetected() && play)
         {
@@ -819,6 +819,7 @@ public class GameMaster : MonoBehaviour
                                         stat = "Continue capturing from tile: " + mandatoryTile;
                                         FindObjectOfType<TextManager>().UpdateText(stat);
                                         Debug.Log("Nie koncze tury not yet");
+                                        return true;
                                     }
                                     else
                                     {
@@ -827,6 +828,7 @@ public class GameMaster : MonoBehaviour
                                         Debug.Log("Koncze ture");
                                         EndReached(FindTile(mandatoryTile));
                                         EndTurn();
+                                        return true;
                                     }
                                 }
                                 else
@@ -842,6 +844,7 @@ public class GameMaster : MonoBehaviour
                                             stat = "Continue capturing from tile: " + mandatoryTile;
                                             FindObjectOfType<TextManager>().UpdateText(stat);
                                             Debug.Log("Nie koncze tury not yet");
+                                            return true;
                                         }
                                         else
                                         {
@@ -850,7 +853,15 @@ public class GameMaster : MonoBehaviour
                                             Debug.Log("Koncze ture");
                                             EndReached(FindTile(mandatoryTile));
                                             EndTurn();
+                                            return true;
                                         }
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("Musisz wykonać poprawne bicie!");
+                                        string stat = "You have to capture from tile: "+mandatoryTile;
+                                        FindObjectOfType<TextManager>().UpdateText(stat);
+                                        return false;
                                     }
                                 }
                             }
@@ -859,7 +870,12 @@ public class GameMaster : MonoBehaviour
                                 Debug.Log("Musisz wykonać poprawne bicie!");
                                 string stat = "You have to capture enemy checker: ";
                                 FindObjectOfType<TextManager>().UpdateText(stat);
+                                return false;
                             }
+                        }
+                        else
+                        {
+                            return false;
                         }
                     }
                     else
@@ -872,8 +888,8 @@ public class GameMaster : MonoBehaviour
                             string stat = "White turn ended";
                             AckCaptureAndContinue(NewTile(),moves);
                             FindObjectOfType<TextManager>().UpdateText(stat);
-
                             EndTurn();
+                            return true;
                         }
                         else
                         {
@@ -888,6 +904,7 @@ public class GameMaster : MonoBehaviour
                                     AckCaptureAndContinue(NewTile(), moves);
                                     FindObjectOfType<TextManager>().UpdateText(stat1);
                                     EndTurn();
+                                    return true;
                                 }
                             }
                             else
@@ -895,6 +912,7 @@ public class GameMaster : MonoBehaviour
                                 Debug.Log("Wykonaj ruch pionkiem białym");
                                 string stat = "Move one white checker";
                                 FindObjectOfType<TextManager>().UpdateText(stat);
+                                return false;
                             }
                         }
                     }
@@ -904,6 +922,7 @@ public class GameMaster : MonoBehaviour
                     Debug.Log("Oczekuje na ruch pionkiem białym");
                     string stat = "Move one white checker";
                     FindObjectOfType<TextManager>().UpdateText(stat);
+                    return false;
                 }
 
             }
@@ -930,6 +949,7 @@ public class GameMaster : MonoBehaviour
                                         stat = "Continue capturing from tile: " + mandatoryTile;
                                         FindObjectOfType<TextManager>().UpdateText(stat);
                                         Debug.Log("Nie koncze tury not yet");
+                                        return true;
                                     }
                                     else
                                     {
@@ -938,6 +958,7 @@ public class GameMaster : MonoBehaviour
                                         Debug.Log("Koncze ture");
                                         EndReached(FindTile(mandatoryTile));
                                         EndTurn();
+                                        return true;
                                     }
                                 }
                                 else
@@ -953,6 +974,7 @@ public class GameMaster : MonoBehaviour
                                             Debug.Log("Nie koncze tury not yet");
                                             stat = "Continue capturing from tile: " + mandatoryTile;
                                             FindObjectOfType<TextManager>().UpdateText(stat);
+                                            return true;
                                         }
                                         else
                                         {
@@ -961,7 +983,15 @@ public class GameMaster : MonoBehaviour
                                             FindObjectOfType<TextManager>().UpdateText(stat);
                                             EndReached(FindTile(mandatoryTile));
                                             EndTurn();
+                                            return true;
                                         }
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("Musisz wykonać poprawne bicie!");
+                                        string stat = "You have to capture from tile: " + mandatoryTile;
+                                        FindObjectOfType<TextManager>().UpdateText(stat);
+                                        return false;
                                     }
                                 }
                             }
@@ -971,6 +1001,7 @@ public class GameMaster : MonoBehaviour
                             Debug.Log("Musisz wykonać poprawne bicie!");
                             string stat = "You have to capture enemy checker: ";
                             FindObjectOfType<TextManager>().UpdateText(stat);
+                            return false;
                         }
                     }
                     else
@@ -986,6 +1017,7 @@ public class GameMaster : MonoBehaviour
                                 AckCaptureAndContinue(NewTile(), moves);
                                 FindObjectOfType<TextManager>().UpdateText(stat);
                                 EndTurn();
+                                return true;
                             }
                             else
                             {
@@ -1000,12 +1032,18 @@ public class GameMaster : MonoBehaviour
                                         AckCaptureAndContinue(NewTile(), moves);
                                         FindObjectOfType<TextManager>().UpdateText(stat1);
                                         EndTurn();
+                                        return true;
                                     }
                                 }
                                 Debug.Log("Wykonaj ruch pionkiem czarnym");
                                 string stat = "Move one black checker";
                                 FindObjectOfType<TextManager>().UpdateText(stat);
+                                return false;
                             }
+                        }
+                        else
+                        {
+                            return false;
                         }
                     }
                 }
@@ -1014,12 +1052,14 @@ public class GameMaster : MonoBehaviour
                     Debug.Log("Oczekuje na ruch pionkiem czarnym");
                     string stat = "Move one black checker";
                     FindObjectOfType<TextManager>().UpdateText(stat);
+                    return false;
                 }
 
-            }
+            } // else
 
 
         }
+        return false;
     }
 
     public bool BoardDetected()
@@ -1053,6 +1093,8 @@ public class GameMaster : MonoBehaviour
         {
             if (BoardDetected())
             {
+                FindObjectOfType<CheckersDetection>().ThrowCheckersOnBoard();
+
                 var board = FindObjectOfType<BoardDetector>();
                 var checkers = FindObjectOfType<CheckersDetection>();
 
