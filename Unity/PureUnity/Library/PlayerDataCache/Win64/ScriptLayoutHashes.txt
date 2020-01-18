@@ -1,6 +1,6 @@
 Win64
 PlayerPath?
-R:/_Repo/Warcaby/Unity/build v0.7/PureUnity.exe
+R:/_Repo/Warcaby/Unity/checkers/PureUnity.exe
 SceneListBegin?
 Assets/Scenes/MainMenu.unity
 Assets/Scenes/WarcabyTMP.unity

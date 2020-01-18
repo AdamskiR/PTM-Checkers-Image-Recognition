@@ -21,7 +21,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 398}
+  m_MinSize: {x: 950, y: 374}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -111,10 +111,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 948
-  m_MinSize: {x: 681, y: 348}
-  m_MaxSize: {x: 12006, y: 8048}
+  m_MinSize: {x: 681, y: 324}
+  m_MaxSize: {x: 12006, y: 8024}
   vertical: 0
-  controlID: 96
+  controlID: 67
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -136,8 +136,8 @@ MonoBehaviour:
     y: 0
     width: 1531
     height: 948
-  m_MinSize: {x: 404, y: 348}
-  m_MaxSize: {x: 8004, y: 8048}
+  m_MinSize: {x: 404, y: 324}
+  m_MaxSize: {x: 8004, y: 8024}
   vertical: 1
   controlID: 97
 --- !u!114 &7
@@ -381,23 +381,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 780e0000
-      m_LastClickedID: 3704
-      m_ExpandedIDs: d4fbffff780e00004c140000
+      m_SelectedIDs: 8e010000
+      m_LastClickedID: 0
+      m_ExpandedIDs: b6c6ffffd4c6ffffa2c8ffffc8c8ffffd4fbffff4c140000181700003a1b0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: BoardTracker
-        m_OriginalName: BoardTracker
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 3274
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 8}
       m_SearchString: 
@@ -438,9 +438,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 653.3825, y: 301.0255, z: 53.210888}
+    m_Target: {x: 560.5995, y: 304.44562, z: -2.035553}
     speed: 2
-    m_Value: {x: 653.3825, y: 301.0255, z: 53.210888}
+    m_Value: {x: 560.5995, y: 304.44562, z: -2.035553}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -468,13 +468,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.0001574877, y: -0.85210073, z: 0.5233779, w: -0.00025638484}
+    m_Target: {x: -0.07741081, y: -0.88596153, z: 0.16012949, w: -0.42829695}
     speed: 2
-    m_Value: {x: -0.0001574877, y: -0.85210073, z: 0.5233779, w: -0.00025638484}
+    m_Value: {x: -0.07741081, y: -0.88596153, z: 0.16012949, w: -0.42829695}
   m_Size:
-    m_Target: 139.50764
+    m_Target: 555.74414
     speed: 2
-    m_Value: 139.50764
+    m_Value: 555.74414
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -563,7 +563,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 44090000
     m_LastClickedID: 2372
-    m_ExpandedIDs: 00000000440900009c090000dc0a0000f20b000000ca9a3b
+    m_ExpandedIDs: 00000000440900009c090000dc0a0000f20b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

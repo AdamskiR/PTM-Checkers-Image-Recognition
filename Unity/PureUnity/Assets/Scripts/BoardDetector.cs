@@ -898,7 +898,7 @@ public class BoardDetector : MonoBehaviour
 
                     neighbours[0] = new NeighbourTilesDetails(FindTile("B6"));
                     neighbours[1] = new NeighbourTilesDetails(FindTile("B8"));
-                    whiteNeighbours[0] = new NeighbourTilesDetails(FindTile("B6"));
+                    blackNeighbours[0] = new NeighbourTilesDetails(FindTile("B6"));
                     whiteNeighbours[0] = new NeighbourTilesDetails(FindTile("B8"));
 
                     t.neighborTiles = neighbours;
@@ -971,7 +971,7 @@ public class BoardDetector : MonoBehaviour
                     neighbours[0] = new NeighbourTilesDetails(FindTile("A7"));
                     neighbours[1] = new NeighbourTilesDetails(FindTile("C7"));
                     blackNeighbours[0] = new NeighbourTilesDetails(FindTile("C7"));
-                    blackNeighbours[0] = new NeighbourTilesDetails(FindTile("A7"));
+                    blackNeighbours[1] = new NeighbourTilesDetails(FindTile("A7"));
 
                     t.neighborTiles = neighbours;
                     t.neighborWhiteTiles = whiteNeighbours;
@@ -986,7 +986,7 @@ public class BoardDetector : MonoBehaviour
                     neighbours[0] = new NeighbourTilesDetails(FindTile("C7"));
                     neighbours[1] = new NeighbourTilesDetails(FindTile("E7"));
                     blackNeighbours[0] = new NeighbourTilesDetails(FindTile("E7"));
-                    blackNeighbours[0] = new NeighbourTilesDetails(FindTile("C7"));
+                    blackNeighbours[1] = new NeighbourTilesDetails(FindTile("C7"));
 
                     t.neighborTiles = neighbours;
                     t.neighborWhiteTiles = whiteNeighbours;
